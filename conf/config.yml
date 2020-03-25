@@ -1,0 +1,3 @@
+title: golang-ddd-template
+router:
+  port: 8080
