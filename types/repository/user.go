@@ -3,7 +3,7 @@ package repository
 import (
 	"context"
 
-	"github.com/jacexh/golang-ddd-template/types/entity"
+	"{{.Module}}/types/entity"
 )
 
 // UserRepository user对象仓库接口定义

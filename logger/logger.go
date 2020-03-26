@@ -3,7 +3,7 @@ package logger
 import (
 	"sync"
 
-	"github.com/jacexh/golang-ddd-template/types"
+	"{{.Module}}/types"
 	"github.com/jacexh/goutil/zaphelper"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"

@@ -7,10 +7,10 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/jacexh/golang-ddd-template/logger"
-	"github.com/jacexh/golang-ddd-template/repository"
-	"github.com/jacexh/golang-ddd-template/router"
-	"github.com/jacexh/golang-ddd-template/types"
+	"{{.Module}}/logger"
+	"{{.Module}}/repository"
+	"{{.Module}}/router"
+	"{{.Module}}/types"
 	"github.com/jacexh/multiconfig"
 	"go.uber.org/zap"
 )
@@ -19,7 +19,7 @@ var (
 	// version 项目版本号，可以在构建时传入
 	version = "(git commit revision)"
 	// environmentVariablesPrefix 项目环境变量前缀
-	environmentVariablesPrefix = "APP"
+	environmentVariablesPrefix = "{{.EnvironmentVariablesPrefix}}"
 	// environmentVariableProfile 项目profile的环境变量名称
 	environmentVariableProfile = environmentVariablesPrefix + "_PROJECT_PROFILE"
 	// profileDirectoryPath 项目配置目录路径

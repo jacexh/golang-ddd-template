@@ -1,6 +1,6 @@
 package service
 
-import "github.com/jacexh/golang-ddd-template/types/repository"
+import "{{.Module}}/types/repository"
 
 type (
 	userService struct {
