@@ -7,3 +7,4 @@ a DDD project template in golang
 - Data Access Library
     * [gendry](https://github.com/didi/gendry)
     * [go-sql-driver](https://github.com/go-sql-driver/mysql)
+- Configuration Library: [multiconfig](https://github.com/jacexh/multiconfig)
