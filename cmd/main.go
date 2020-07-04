@@ -12,11 +12,11 @@ import (
 	"strings"
 	"syscall"
 
-	"github.com/jacexh/golang-ddd-template/application"
-	"github.com/jacexh/golang-ddd-template/infrastructure/repository"
-	"github.com/jacexh/golang-ddd-template/logger"
-	"github.com/jacexh/golang-ddd-template/option"
-	"github.com/jacexh/golang-ddd-template/router"
+	"{{.Module}}/application"
+	"{{.Module}}/infrastructure/repository"
+	"{{.Module}}/logger"
+	"{{.Module}}/option"
+	"{{.Module}}/router"
 	"github.com/jacexh/multiconfig"
 	"go.uber.org/zap"
 )

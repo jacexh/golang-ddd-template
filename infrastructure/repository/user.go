@@ -4,7 +4,7 @@ import (
 	"context"
 	"database/sql"
 
-	"github.com/jacexh/golang-ddd-template/domain/user"
+	"{{.Module}}/domain/user"
 )
 
 type (

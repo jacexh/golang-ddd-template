@@ -3,8 +3,8 @@ package application
 import (
 	"context"
 
-	"github.com/jacexh/golang-ddd-template/domain/user"
-	"github.com/jacexh/golang-ddd-template/types"
+	"{{.Module}}/domain/user"
+	"{{.Module}}/types"
 )
 
 var (
