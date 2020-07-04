@@ -9,11 +9,11 @@ RUN set -e \
     && apt update -y \
     && apt install -y git \
     && REVISION=`git rev-list -1 HEAD` \
-    && go build -ldflags "-X main.version=$REVISION" -o {{.BinFile}} -tags=jsoniter
+    && go build -ldflags "-X main.version=$REVISION" -o {{.BinFile}} -tags=jsoniter cmd/main.go
 
 FROM debian:buster
 WORKDIR /app
 COPY --from=builder /go/src/app .
-COPY --from=builder /go/src/conf /app/conf
+COPY --from=builder /go/src/cmd/config.yml .
 EXPOSE 8080
 CMD ["/app/{{.BinFile}}"]
