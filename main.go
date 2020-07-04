@@ -7,10 +7,10 @@ import (
 	"strconv"
 	"strings"
 
-	"{{.Module}}/logger"
-	"{{.Module}}/repository"
-	"{{.Module}}/router"
-	"{{.Module}}/types"
+	"github.com/jacexh/golang-ddd-template/logger"
+	"github.com/jacexh/golang-ddd-template/repository"
+	"github.com/jacexh/golang-ddd-template/router"
+	"github.com/jacexh/golang-ddd-template/types"
 	"github.com/jacexh/multiconfig"
 	"go.uber.org/zap"
 )

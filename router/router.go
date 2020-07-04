@@ -4,8 +4,8 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"{{.Module}}/logger"
-	"{{.Module}}/types"
+	"github.com/jacexh/golang-ddd-template/logger"
+	"github.com/jacexh/golang-ddd-template/types"
 	"github.com/jacexh/goutil/gin-middleware/ginzap"
 )
 

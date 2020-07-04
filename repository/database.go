@@ -6,7 +6,7 @@ import (
 
 	"github.com/didi/gendry/manager"
 	_ "github.com/go-sql-driver/mysql"
-	"{{.Module}}/types"
+	"github.com/jacexh/golang-ddd-template/types"
 )
 
 var (
