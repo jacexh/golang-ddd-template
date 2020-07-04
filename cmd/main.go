@@ -2,15 +2,21 @@ package main
 
 import (
 	"errors"
+	"fmt"
 	"os"
+	"os/signal"
+	"path"
 	"path/filepath"
+	"runtime"
 	"strconv"
 	"strings"
+	"syscall"
 
+	"github.com/jacexh/golang-ddd-template/application"
+	"github.com/jacexh/golang-ddd-template/infrastructure/repository"
 	"github.com/jacexh/golang-ddd-template/logger"
-	"github.com/jacexh/golang-ddd-template/repository"
+	"github.com/jacexh/golang-ddd-template/option"
 	"github.com/jacexh/golang-ddd-template/router"
-	"github.com/jacexh/golang-ddd-template/types"
 	"github.com/jacexh/multiconfig"
 	"go.uber.org/zap"
 )
@@ -23,14 +29,14 @@ var (
 	// environmentVariableProfile 项目profile的环境变量名称
 	environmentVariableProfile = environmentVariablesPrefix + "_PROJECT_PROFILE"
 	// profileDirectoryPath 项目配置目录路径
-	profileDirectoryPath = "./conf"
+	profileDirectoryPath = "."
 	// profileFilePrefix profile文件前缀
 	profileFilePrefix = "config"
 	// profileFileFormat profile文件格式
 	profileFileFormat = "yaml"
 )
 
-func loadOptionByProfile() *types.Option {
+func loadOptionByProfile() *option.Option {
 	profile := os.Getenv(environmentVariableProfile)
 	fn := profileFilePrefix
 	if profile != "" {
@@ -50,8 +56,9 @@ func loadOptionByProfile() *types.Option {
 	}
 
 	var err error
+	_, runningFile, _, _ := runtime.Caller(1)
 	for _, f := range fs {
-		fp := filepath.Join(profileDirectoryPath, f)
+		fp := filepath.Join(path.Dir(runningFile), profileDirectoryPath, f)
 		_, err = os.Stat(fp)
 		if os.IsNotExist(err) {
 			continue
@@ -61,10 +68,10 @@ func loadOptionByProfile() *types.Option {
 	panic(err)
 }
 
-func loadOption(path string) *types.Option {
+func loadOption(path string) *option.Option {
 	loader := multiconfig.NewWithPathAndEnvPrefix(path, environmentVariablesPrefix)
 
-	opt := new(types.Option)
+	opt := new(option.Option)
 	loader.MustLoad(opt)
 	return opt
 }
@@ -78,15 +85,33 @@ func main() {
 	logger.Logger.Info("loaded options", zap.Any("option", opt), zap.String("version", version))
 
 	// 创建数据库连接
-	_, err := repository.BuildDBConnection(opt.Database)
+	db, err := repository.BuildDBConnection(opt.Database)
 	if err != nil {
 		logger.Logger.Panic("failed to connect with database", zap.Error(err))
 	}
+	ur := repository.NewUserRepository(db)
+
+	// 初始化application层
+	application.BuildUserApplication(ur)
 
 	// 启动运行web server
 	eng := router.BuildRouter(opt.Router)
-	logger.Logger.Info("server is booting up")
-	logger.Logger.Fatal(
-		"server was down",
-		zap.Error(eng.Run(":"+strconv.Itoa(opt.Router.Port))))
+	eng.GET("/ping", router.Ping)
+	eng.GET("/users/:user", router.GetUser)
+
+	// 服务启动
+	errChan := make(chan error, 1)
+	go func() {
+		logger.Logger.Info(fmt.Sprintf("service is running on port %d", opt.Router.Port))
+		errChan <- eng.Run(":" + strconv.Itoa(opt.Router.Port))
+	}()
+
+	go func() {
+		sigs := make(chan os.Signal, 1)
+		signal.Notify(sigs, syscall.SIGINT, syscall.SIGTERM, os.Interrupt)
+		sig := <-sigs
+		errChan <- fmt.Errorf("caught signal: %s", sig.String())
+	}()
+
+	logger.Logger.Panic("service was shutdown", zap.Error(<-errChan))
 }
