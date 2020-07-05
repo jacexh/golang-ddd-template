@@ -11,6 +11,11 @@ a DDD project template in golang
 
 ## Change Log
 
+### 0.2.1
+
+- 区分`DataObject`以及`Entity`
+- 修改目录名称 `infrastructure/repository` -> `infrastructure/persistence`
+
 ### 0.2.0
 
 基于依赖反转原则以及六边形架构重构整个项目

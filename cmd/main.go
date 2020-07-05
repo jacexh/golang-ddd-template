@@ -13,7 +13,7 @@ import (
 	"syscall"
 
 	"github.com/jacexh/golang-ddd-template/application"
-	"github.com/jacexh/golang-ddd-template/infrastructure/repository"
+	"github.com/jacexh/golang-ddd-template/infrastructure/persistence"
 	"github.com/jacexh/golang-ddd-template/logger"
 	"github.com/jacexh/golang-ddd-template/option"
 	"github.com/jacexh/golang-ddd-template/router"
@@ -85,11 +85,11 @@ func main() {
 	logger.Logger.Info("loaded options", zap.Any("option", opt), zap.String("version", version))
 
 	// 创建数据库连接
-	db, err := repository.BuildDBConnection(opt.Database)
+	db, err := persistence.BuildDBConnection(opt.Database)
 	if err != nil {
 		logger.Logger.Panic("failed to connect with database", zap.Error(err))
 	}
-	ur := repository.NewUserRepository(db)
+	ur := persistence.NewUserRepository(db)
 
 	// 初始化application层
 	application.BuildUserApplication(ur)

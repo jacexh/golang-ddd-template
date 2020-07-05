@@ -1,10 +1,11 @@
-package repository
+package persistence
 
 import (
 	"context"
 	"database/sql"
 
 	"github.com/jacexh/golang-ddd-template/domain/user"
+	"github.com/jacexh/golang-ddd-template/types/do"
 )
 
 type (
@@ -12,6 +13,15 @@ type (
 		db *sql.DB
 	}
 )
+
+func convert(entity *user.UserEntity) *do.UserDo {
+	return &do.UserDo{
+		ID:       entity.ID,
+		Name:     entity.Name,
+		Password: entity.Password,
+		Email:    entity.Email,
+	}
+}
 
 func NewUserRepository(db *sql.DB) user.UserRepository {
 	return &UserRepository{db}
