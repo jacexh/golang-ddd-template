@@ -5,9 +5,9 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/jacexh/golang-ddd-template/application"
-	"github.com/jacexh/golang-ddd-template/logger"
-	"github.com/jacexh/golang-ddd-template/option"
+	"{{.Module}}/application"
+	"{{.Module}}/logger"
+	"{{.Module}}/option"
 	"github.com/jacexh/goutil/gin-middleware/ginzap"
 )
 
