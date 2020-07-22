@@ -13,7 +13,7 @@ RUN set -e \
 
 FROM debian:buster
 WORKDIR /app
-COPY --from=builder /go/src/app .
+COPY --from=builder /go/src/{{.BinFile}} .
 COPY --from=builder /go/src/cmd/config.yml .
 EXPOSE 8080
 CMD ["/app/{{.BinFile}}"]
