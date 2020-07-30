@@ -9,6 +9,15 @@ a DDD project template in golang
     * [go-sql-driver](https://github.com/go-sql-driver/mysql)
 - Configuration Library: [multiconfig](https://github.com/jacexh/multiconfig)
 
+## Quick Start
+
+```
+# download project generator
+go get -u github.com/jacexh/gdp@master
+
+gdp
+```
+
 ## Change Log
 
 ### 0.2.1
