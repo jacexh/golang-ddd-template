@@ -7,7 +7,6 @@ import (
 	"{{.Module}}/logger"
 	"{{.Module}}/option"
 	"{{.Module}}/router/api"
-	"github.com/jacexh/goutil/gin-middleware/ginzap"
 )
 
 // BuildRouter 构造Router
