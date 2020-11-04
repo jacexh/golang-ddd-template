@@ -1,30 +1,36 @@
 package persistence
 
 import (
-	"database/sql"
+	"fmt"
 
-	"github.com/didi/gendry/manager"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jacexh/golang-ddd-template/option"
+	xzl "github.com/jacexh/xorm-zap-logger"
+	"go.uber.org/zap"
+	"xorm.io/xorm"
 )
 
 var (
-	db *sql.DB
+	db *xorm.Engine
 )
 
 // BuildDBConnection 数据库连接函数
-func BuildDBConnection(option option.DatabaseOption) (*sql.DB, error) {
+func BuildDBConnection(option option.DatabaseOption, logger *zap.Logger) (*xorm.Engine, error) {
+	dsn := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=utf8mb4&parseTime=True&loc=Local",
+		option.Username, option.Password, option.Host, option.Port, option.Database)
 	var err error
-	db, err = manager.New(option.Database, option.Username, option.Password, option.Host).Set(
-		manager.SetCharset("utf8mb4"),
-		manager.SetParseTime(true),
-		manager.SetAllowCleartextPasswords(true),
-	).Port(option.Port).Open(true)
+	db, err = xorm.NewEngine("mysql", dsn)
 	if err != nil {
-		return db, err
+		return nil, err
 	}
-
-	db.SetMaxOpenConns(option.MaxOpenConnections)
 	db.SetMaxIdleConns(option.MaxIdleConnections)
-	return db, err
+	db.SetMaxOpenConns(option.MaxOpenConnections)
+
+	db.SetLogger(xzl.NewXormZapLogger(logger))
+	db.ShowSQL(true)
+
+	if err = db.Ping(); err != nil {
+		return nil, err
+	}
+	return db, nil
 }

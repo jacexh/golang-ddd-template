@@ -2,22 +2,22 @@ package persistence
 
 import (
 	"context"
-	"database/sql"
 
 	"github.com/jacexh/golang-ddd-template/domain/user"
+	"xorm.io/xorm"
 )
 
 type (
 	userRepository struct {
-		db *sql.DB
+		db *xorm.Engine
 	}
 )
 
-func BuildUserRepository(db *sql.DB) user.UserRepository {
+func BuildUserRepository(db *xorm.Engine) user.UserRepository {
 	return newUserRepository(db)
 }
 
-func newUserRepository(db *sql.DB) *userRepository {
+func newUserRepository(db *xorm.Engine) *userRepository {
 	return &userRepository{db}
 }
 

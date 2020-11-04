@@ -81,11 +81,11 @@ func main() {
 	opt := loadOptionByProfile()
 
 	// 加载全局日志配置，完成日志的初始化操作
-	logger.BuildLogger(opt.Logger)
+	log := logger.BuildLogger(opt.Logger)
 	logger.Logger.Info("loaded options", zap.Any("option", opt), zap.String("version", version))
 
 	// 创建数据库连接
-	db, err := persistence.BuildDBConnection(opt.Database)
+	db, err := persistence.BuildDBConnection(opt.Database, log)
 	if err != nil {
 		logger.Logger.Panic("failed to connect with database", zap.Error(err))
 	}
