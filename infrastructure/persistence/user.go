@@ -5,32 +5,26 @@ import (
 	"database/sql"
 
 	"github.com/jacexh/golang-ddd-template/domain/user"
-	"github.com/jacexh/golang-ddd-template/types/do"
 )
 
 type (
-	UserRepository struct {
+	userRepository struct {
 		db *sql.DB
 	}
 )
 
-func convert(entity *user.UserEntity) *do.UserDo {
-	return &do.UserDo{
-		ID:       entity.ID,
-		Name:     entity.Name,
-		Password: entity.Password,
-		Email:    entity.Email,
-	}
+func BuildUserRepository(db *sql.DB) user.UserRepository {
+	return newUserRepository(db)
 }
 
-func NewUserRepository(db *sql.DB) user.UserRepository {
-	return &UserRepository{db}
+func newUserRepository(db *sql.DB) *userRepository {
+	return &userRepository{db}
 }
 
-func (ur *UserRepository) CreateUser(context.Context, *user.UserEntity) error {
+func (ur *userRepository) SaveUser(context.Context, *user.UserEntity) error {
 	return nil
 }
 
-func (ur *UserRepository) GetUserByID(context.Context, string) (*user.UserEntity, error) {
+func (ur *userRepository) GetUserByID(context.Context, string) (*user.UserEntity, error) {
 	return nil, nil
 }

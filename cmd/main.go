@@ -89,15 +89,13 @@ func main() {
 	if err != nil {
 		logger.Logger.Panic("failed to connect with database", zap.Error(err))
 	}
-	ur := persistence.NewUserRepository(db)
+	ur := persistence.BuildUserRepository(db)
 
 	// 初始化application层
 	application.BuildUserApplication(ur)
 
 	// 启动运行web server
 	eng := router.BuildRouter(opt.Router)
-	eng.GET("/ping", router.Ping)
-	eng.GET("/users/:user", router.GetUser)
 
 	// 服务启动
 	errChan := make(chan error, 1)

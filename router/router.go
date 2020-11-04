@@ -1,13 +1,12 @@
 package router
 
 import (
-	"context"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/jacexh/golang-ddd-template/application"
 	"github.com/jacexh/golang-ddd-template/logger"
 	"github.com/jacexh/golang-ddd-template/option"
+	"github.com/jacexh/golang-ddd-template/router/api"
 	"github.com/jacexh/goutil/gin-middleware/ginzap"
 )
 
@@ -20,23 +19,14 @@ func BuildRouter(option option.RouterOption) *gin.Engine {
 		ginzap.RecoveryWithZap(logger.Logger, option.LogStackIfPanic),
 		ginzap.Ginzap(logger.Logger, option.MergeLog, option.DumpResponse),
 	)
+
+	group := router.Group("/api")
+	{
+		group.GET("/users/:user", api.GetUser)
+	}
+
+	router.GET("/ping", func(c *gin.Context) {
+		c.Data(http.StatusOK, gin.MIMEPlain, []byte("ping"))
+	})
 	return router
-}
-
-func Ping(c *gin.Context) {
-	c.Data(http.StatusOK, gin.MIMEPlain, []byte("ping"))
-}
-
-func GetUser(c *gin.Context) {
-	uid, ok := c.Params.Get("user")
-	if !ok {
-		c.AbortWithStatus(http.StatusNotFound)
-		return
-	}
-	dto, err := application.UserApplication.GetUserByID(context.Background(), uid)
-	if err != nil {
-		c.AbortWithStatus(http.StatusInternalServerError)
-		return
-	}
-	c.JSON(http.StatusOK, dto)
 }
