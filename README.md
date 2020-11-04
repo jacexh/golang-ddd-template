@@ -20,6 +20,12 @@ gdp
 
 ## Change Log
 
+### 0.2.2
+
+- 使用`xorm.io`替换`github.com/didi/gendry`
+- 升级gin/zap等依赖版本
+- dto <--> entity, do <--> entity 转换层更加显性地表达
+
 ### 0.2.1
 
 - 区分`DataObject`以及`Entity`
