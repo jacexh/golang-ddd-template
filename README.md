@@ -9,7 +9,22 @@ a DDD project template in golang
     * [go-sql-driver](https://github.com/go-sql-driver/mysql)
 - Configuration Library: [multiconfig](https://github.com/jacexh/multiconfig)
 
+## Quick Start
+
+```
+# download project generator
+go get -u github.com/jacexh/gdp@master
+
+gdp
+```
+
 ## Change Log
+
+### 0.2.2
+
+- 使用`xorm.io`替换`github.com/didi/gendry`
+- 升级gin/zap等依赖版本
+- dto <--> entity, do <--> entity 转换层更加显性地表达
 
 ### 0.2.1
 

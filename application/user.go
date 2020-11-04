@@ -4,41 +4,38 @@ import (
 	"context"
 
 	"{{.Module}}/domain/user"
+	"{{.Module}}/logger"
 	"{{.Module}}/types/dto"
+	"go.uber.org/zap"
 )
 
 var (
-	UserApplication *userApplication
+	User *userApplication
 )
 
 type (
 	userApplication struct {
 		repo user.UserRepository
 	}
+
+	UserApplication interface {
+		GetUserByID(context.Context, string) (*dto.UserDTO, error)
+	}
 )
 
+// BuildUserApplication create user application instance
 func BuildUserApplication(repo user.UserRepository) {
-	UserApplication = &userApplication{
+	User = &userApplication{
 		repo: repo,
 	}
 }
 
-func convert(user *user.UserEntity) *dto.UserDTO {
-	return &dto.UserDTO{
-		ID:    user.ID,
-		Name:  user.Name,
-		Email: user.Email,
-	}
-}
-
-func (ua *userApplication) WithUserRepository(repo user.UserRepository) {
-	ua.repo = repo
-}
-
+// GetUserByID return user data transfer object
 func (ua *userApplication) GetUserByID(ctx context.Context, uid string) (*dto.UserDTO, error) {
-	user, err := ua.repo.GetUserByID(ctx, uid)
+	u, err := ua.repo.GetUserByID(ctx, uid)
 	if err != nil {
+		logger.Logger.Error("failed to get user by id", zap.String("user_id", uid), zap.Error(err))
 		return nil, err
 	}
-	return convert(user), nil
+	return convertUser(u), nil
 }

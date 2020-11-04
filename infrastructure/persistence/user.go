@@ -2,35 +2,29 @@ package persistence
 
 import (
 	"context"
-	"database/sql"
 
 	"{{.Module}}/domain/user"
-	"{{.Module}}/types/do"
+	"xorm.io/xorm"
 )
 
 type (
-	UserRepository struct {
-		db *sql.DB
+	userRepository struct {
+		db *xorm.Engine
 	}
 )
 
-func convert(entity *user.UserEntity) *do.UserDo {
-	return &do.UserDo{
-		ID:       entity.ID,
-		Name:     entity.Name,
-		Password: entity.Password,
-		Email:    entity.Email,
-	}
+func BuildUserRepository(db *xorm.Engine) user.UserRepository {
+	return newUserRepository(db)
 }
 
-func NewUserRepository(db *sql.DB) user.UserRepository {
-	return &UserRepository{db}
+func newUserRepository(db *xorm.Engine) *userRepository {
+	return &userRepository{db}
 }
 
-func (ur *UserRepository) CreateUser(context.Context, *user.UserEntity) error {
+func (ur *userRepository) SaveUser(context.Context, *user.UserEntity) error {
 	return nil
 }
 
-func (ur *UserRepository) GetUserByID(context.Context, string) (*user.UserEntity, error) {
+func (ur *userRepository) GetUserByID(context.Context, string) (*user.UserEntity, error) {
 	return nil, nil
 }
