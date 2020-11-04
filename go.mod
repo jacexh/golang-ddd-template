@@ -1,4 +1,4 @@
-module github.com/jacexh/golang-ddd-template
+module {{.Module}}
 
 go 1.14
 

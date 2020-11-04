@@ -1,8 +1,8 @@
 package application
 
 import (
-	"github.com/jacexh/golang-ddd-template/domain/user"
-	"github.com/jacexh/golang-ddd-template/types/dto"
+	"{{.Module}}/domain/user"
+	"{{.Module}}/types/dto"
 )
 
 func convertUser(user *user.UserEntity) *dto.UserDTO {
