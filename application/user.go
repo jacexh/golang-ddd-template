@@ -3,9 +3,9 @@ package application
 import (
 	"context"
 
-	"github.com/jacexh/golang-ddd-template/domain/user"
-	"github.com/jacexh/golang-ddd-template/logger"
-	"github.com/jacexh/golang-ddd-template/types/dto"
+	"{{.Module}}/domain/user"
+	"{{.Module}}/logger"
+	"{{.Module}}/types/dto"
 	"go.uber.org/zap"
 )
 
