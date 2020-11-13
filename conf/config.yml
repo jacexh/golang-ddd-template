@@ -1,0 +1,6 @@
+description: golang-ddd-template
+router:
+  port: 8080
+  merge_log: true
+logger:
+  level: debug

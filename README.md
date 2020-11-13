@@ -20,6 +20,11 @@ gdp
 
 ## Change Log
 
+### 0.2.3
+
+- 独立option模块，减少main.go文件代码量
+- 配置文件移入`./conf`目录
+
 ### 0.2.2
 
 - 使用`xorm.io`替换`github.com/didi/gendry`
