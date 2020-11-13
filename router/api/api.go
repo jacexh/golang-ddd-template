@@ -5,7 +5,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"{{.Module}}/application"
+	"github.com/jacexh/golang-ddd-template/application"
 )
 
 func GetUser(c *gin.Context) {
