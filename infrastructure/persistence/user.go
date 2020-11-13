@@ -3,7 +3,7 @@ package persistence
 import (
 	"context"
 
-	"github.com/jacexh/golang-ddd-template/domain/user"
+	"{{.Module}}/domain/user"
 	"xorm.io/xorm"
 )
 
