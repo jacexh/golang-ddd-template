@@ -14,7 +14,7 @@ RUN set -e \
 FROM debian:buster
 WORKDIR /app
 VOLUME /app/conf
-COPY --from=builder /go/src/app .
+COPY --from=builder /go/src/{{.BinFile}} .
 COPY --from=builder /go/src/conf/* ./conf/
 RUN set -e \
     && sed -i "s/deb.debian.org/mirrors.aliyun.com/g" /etc/apt/sources.list \
