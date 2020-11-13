@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	_ "github.com/go-sql-driver/mysql"
-	"{{.Module}}/option"
+	"github.com/jacexh/golang-ddd-template/option"
 	xzl "github.com/jacexh/xorm-zap-logger"
 	"go.uber.org/zap"
 	"xorm.io/xorm"

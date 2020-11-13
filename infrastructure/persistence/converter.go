@@ -1,8 +1,8 @@
 package persistence
 
 import (
-	"{{.Module}}/domain/user"
-	"{{.Module}}/types/do"
+	"github.com/jacexh/golang-ddd-template/domain/user"
+	"github.com/jacexh/golang-ddd-template/types/do"
 )
 
 func convertUser(entity *user.UserEntity) *do.UserDo {

@@ -9,7 +9,7 @@ RUN set -e \
     && apt update -y \
     && apt install -y git \
     && REVISION=`git rev-list -1 HEAD` \
-    && go build -ldflags "-X main.version=$REVISION" -o {{.BinFile}} -tags=jsoniter cmd/main.go
+    && go build -ldflags "-X main.version=$REVISION" -o app -tags=jsoniter cmd/main.go
 
 FROM debian:buster
 WORKDIR /app
@@ -25,4 +25,4 @@ RUN set -e \
     && apt autoremove -yqq \
     && rm -rf /var/lib/apt/lists/*
 EXPOSE 8080
-CMD ["/app/{{.BinFile}}"]
+CMD ["/app/app"]
