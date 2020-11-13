@@ -1,15 +1,10 @@
 package main
 
 import (
-	"errors"
 	"fmt"
 	"os"
 	"os/signal"
-	"path"
-	"path/filepath"
-	"runtime"
 	"strconv"
-	"strings"
 	"syscall"
 
 	"github.com/jacexh/golang-ddd-template/application"
@@ -17,68 +12,17 @@ import (
 	"github.com/jacexh/golang-ddd-template/logger"
 	"github.com/jacexh/golang-ddd-template/option"
 	"github.com/jacexh/golang-ddd-template/router"
-	"github.com/jacexh/multiconfig"
 	"go.uber.org/zap"
 )
 
 var (
 	// version 项目版本号，可以在构建时传入
 	version = "(git commit revision)"
-	// environmentVariablesPrefix 项目环境变量前缀
-	environmentVariablesPrefix = "{{.EnvironmentVariablesPrefix}}"
-	// environmentVariableProfile 项目profile的环境变量名称
-	environmentVariableProfile = environmentVariablesPrefix + "_PROJECT_PROFILE"
-	// profileDirectoryPath 项目配置目录路径
-	profileDirectoryPath = "."
-	// profileFilePrefix profile文件前缀
-	profileFilePrefix = "config"
-	// profileFileFormat profile文件格式
-	profileFileFormat = "yaml"
 )
-
-func loadOptionByProfile() *option.Option {
-	profile := os.Getenv(environmentVariableProfile)
-	fn := profileFilePrefix
-	if profile != "" {
-		fn = fn + "_" + strings.ToLower(profile)
-	}
-	var fs []string
-
-	switch profileFileFormat {
-	case "json":
-		fs = append(fs, fn+".json")
-	case "toml":
-		fs = append(fs, fn+".toml")
-	case "yaml":
-		fs = append(fs, fn+".yml", fn+".yaml")
-	default:
-		panic(errors.New("unsupported file format"))
-	}
-
-	var err error
-	_, runningFile, _, _ := runtime.Caller(1)
-	for _, f := range fs {
-		fp := filepath.Join(path.Dir(runningFile), profileDirectoryPath, f)
-		_, err = os.Stat(fp)
-		if os.IsNotExist(err) {
-			continue
-		}
-		return loadOption(fp)
-	}
-	panic(err)
-}
-
-func loadOption(path string) *option.Option {
-	loader := multiconfig.NewWithPathAndEnvPrefix(path, environmentVariablesPrefix)
-
-	opt := new(option.Option)
-	loader.MustLoad(opt)
-	return opt
-}
 
 func main() {
 	// 加载项目配置文件
-	opt := loadOptionByProfile()
+	opt := option.LoadConfig()
 
 	// 加载全局日志配置，完成日志的初始化操作
 	log := logger.BuildLogger(opt.Logger)
@@ -87,7 +31,7 @@ func main() {
 	// 创建数据库连接
 	db, err := persistence.BuildDBConnection(opt.Database, log)
 	if err != nil {
-		logger.Logger.Panic("failed to connect with database", zap.Error(err))
+		logger.Logger.Fatal("failed to connect with database", zap.Error(err))
 	}
 	ur := persistence.BuildUserRepository(db)
 
@@ -111,5 +55,5 @@ func main() {
 		errChan <- fmt.Errorf("caught signal: %s", sig.String())
 	}()
 
-	logger.Logger.Panic("service was shutdown", zap.Error(<-errChan))
+	logger.Logger.Fatal("service was shutdown", zap.Error(<-errChan))
 }
