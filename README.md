@@ -5,7 +5,7 @@ a DDD project template in golang
     * [Middlewares](github.com/jacexh/goutil/gin-middleware)
 - Logging Library: [zap](https://github.com/uber-go/zap)
 - Data Access Library
-    * [gendry](https://github.com/didi/gendry)
+    * [xorm](https://xorm.io/)
     * [go-sql-driver](https://github.com/go-sql-driver/mysql)
 - Configuration Library: [multiconfig](https://github.com/jacexh/multiconfig)
 
@@ -19,6 +19,11 @@ gdp
 ```
 
 ## Change Log
+
+### 0.2.4
+
+- 实现trace功能，确保request id可以在application、infra等层传递，可支持其他对象的传递
+- 实现Graceful Shutdown
 
 ### 0.2.3
 
