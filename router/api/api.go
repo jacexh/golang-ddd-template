@@ -5,7 +5,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/jacexh/golang-ddd-template/application"
-	"github.com/jacexh/golang-ddd-template/router/helper"
+	"github.com/jacexh/golang-ddd-template/trace"
 )
 
 func GetUser(c *gin.Context) {
@@ -14,7 +14,7 @@ func GetUser(c *gin.Context) {
 		c.AbortWithStatus(http.StatusNotFound)
 		return
 	}
-	dto, err := application.User.GetUserByID(helper.GenContextWithRequestIndex(c), uid)
+	dto, err := application.User.GetUserByID(trace.GenContextWithRequestIndex(c), uid)
 	if err != nil {
 		c.AbortWithStatus(http.StatusInternalServerError)
 		return

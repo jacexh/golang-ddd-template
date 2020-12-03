@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
+	"github.com/jacexh/golang-ddd-template/trace"
 	"go.uber.org/zap"
 )
 
@@ -65,7 +66,7 @@ func Ginzap(logger *zap.Logger, mergeLog bool, dumpResponse bool) gin.HandlerFun
 				zap.String("query", query),
 				zap.String("ip", c.ClientIP()),
 				zap.String("user-agent", c.Request.UserAgent()),
-				ExtractRequestIndexAsZapField(c),
+				trace.ExtractRequestIndexAsField(c),
 			)
 		}
 
@@ -88,13 +89,13 @@ func Ginzap(logger *zap.Logger, mergeLog bool, dumpResponse bool) gin.HandlerFun
 
 		switch {
 		case len(c.Errors) > 0:
-			logger.Error("got some errors from gin.Context", ExtractRequestIndexAsZapField(c), zap.Strings("errors", c.Errors.Errors()))
+			logger.Error("got some errors from gin.Context", zap.Strings("errors", c.Errors.Errors()), trace.ExtractRequestIndexAsField(c))
 
 		case !mergeLog && !dumpResponse:
 			logger.Info("send http response",
 				zap.Int("status-code", c.Writer.Status()),
 				zap.Int64("latency", latency),
-				ExtractRequestIndexAsZapField(c),
+				trace.ExtractRequestIndexAsField(c),
 			)
 
 		case !mergeLog && dumpResponse:
@@ -102,7 +103,7 @@ func Ginzap(logger *zap.Logger, mergeLog bool, dumpResponse bool) gin.HandlerFun
 				zap.Int("status", c.Writer.Status()),
 				zap.ByteString("response-body", respBody),
 				zap.Int64("latency", latency),
-				ExtractRequestIndexAsZapField(c),
+				trace.ExtractRequestIndexAsField(c),
 			)
 
 		case mergeLog && !dumpResponse:
@@ -114,7 +115,7 @@ func Ginzap(logger *zap.Logger, mergeLog bool, dumpResponse bool) gin.HandlerFun
 				zap.String("user-agent", c.Request.UserAgent()),
 				zap.Int("status", c.Writer.Status()),
 				zap.Int64("latency", latency),
-				ExtractRequestIndexAsZapField(c),
+				trace.ExtractRequestIndexAsField(c),
 			)
 
 		case mergeLog && dumpResponse:
@@ -127,7 +128,7 @@ func Ginzap(logger *zap.Logger, mergeLog bool, dumpResponse bool) gin.HandlerFun
 				zap.Int("status", c.Writer.Status()),
 				zap.ByteString("response-body", respBody),
 				zap.Int64("latency", latency),
-				ExtractRequestIndexAsZapField(c),
+				trace.ExtractRequestIndexAsField(c),
 			)
 		}
 	}

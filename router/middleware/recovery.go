@@ -9,6 +9,7 @@ import (
 	"strings"
 
 	"github.com/gin-gonic/gin"
+	"github.com/jacexh/golang-ddd-template/trace"
 	"go.uber.org/zap"
 )
 
@@ -37,7 +38,7 @@ func RecoveryWithZap(logger *zap.Logger, stack bool) gin.HandlerFunc {
 					logger.Error(c.Request.URL.Path,
 						zap.Any("error", err),
 						zap.ByteString("request", httpRequest),
-						ExtractRequestIndexAsZapField(c),
+						trace.ExtractRequestIndexAsField(c),
 					)
 					// If the connection is dead, we can't write a status to it.
 					c.Error(err.(error)) // nolint: errcheck
@@ -50,13 +51,13 @@ func RecoveryWithZap(logger *zap.Logger, stack bool) gin.HandlerFunc {
 						zap.Any("error", err),
 						zap.ByteString("request", httpRequest),
 						zap.ByteString("stack", debug.Stack()),
-						ExtractRequestIndexAsZapField(c),
+						trace.ExtractRequestIndexAsField(c),
 					)
 				} else {
 					logger.Error("[Recovery from panic]",
 						zap.Any("error", err),
 						zap.ByteString("request", httpRequest),
-						ExtractRequestIndexAsZapField(c),
+						trace.ExtractRequestIndexAsField(c),
 					)
 				}
 				c.AbortWithStatus(http.StatusInternalServerError)
