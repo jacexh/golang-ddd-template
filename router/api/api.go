@@ -1,11 +1,11 @@
 package api
 
 import (
-	"context"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
 	"github.com/jacexh/golang-ddd-template/application"
+	"github.com/jacexh/golang-ddd-template/router/helper"
 )
 
 func GetUser(c *gin.Context) {
@@ -14,7 +14,7 @@ func GetUser(c *gin.Context) {
 		c.AbortWithStatus(http.StatusNotFound)
 		return
 	}
-	dto, err := application.User.GetUserByID(context.Background(), uid)
+	dto, err := application.User.GetUserByID(helper.GenContextWithRequestIndex(c), uid)
 	if err != nil {
 		c.AbortWithStatus(http.StatusInternalServerError)
 		return
