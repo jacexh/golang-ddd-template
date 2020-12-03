@@ -3,9 +3,9 @@ package persistence
 import (
 	"context"
 
-	"github.com/jacexh/golang-ddd-template/domain/user"
-	"github.com/jacexh/golang-ddd-template/logger"
-	"github.com/jacexh/golang-ddd-template/trace"
+	"{{.Module}}/domain/user"
+	"{{.Module}}/logger"
+	"{{.Module}}/trace"
 	"go.uber.org/zap"
 	"xorm.io/xorm"
 )
