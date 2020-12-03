@@ -2,20 +2,16 @@ package middleware
 
 import (
 	"bytes"
-	"sync"
 	"time"
 
 	"github.com/gin-gonic/gin"
+	"github.com/jacexh/golang-ddd-template/pkg/bytespool"
 	"github.com/jacexh/golang-ddd-template/trace"
 	"go.uber.org/zap"
 )
 
 var (
-	bpool = &bytesPool{
-		pool: sync.Pool{New: func() interface{} {
-			return bytes.NewBuffer(nil)
-		}},
-	}
+	bpool = bytespool.NewBytesPool()
 )
 
 type (
@@ -24,20 +20,7 @@ type (
 		gin.ResponseWriter
 		cache *bytes.Buffer
 	}
-
-	bytesPool struct {
-		pool sync.Pool
-	}
 )
-
-func (bp *bytesPool) get() *bytes.Buffer {
-	return bp.pool.Get().(*bytes.Buffer)
-}
-
-func (bp *bytesPool) put(cache *bytes.Buffer) {
-	cache.Reset()
-	bp.pool.Put(cache)
-}
 
 func (hw *hijackWriter) Write(b []byte) (int, error) {
 	hw.cache.Write(b)
@@ -66,13 +49,13 @@ func Ginzap(logger *zap.Logger, mergeLog bool, dumpResponse bool) gin.HandlerFun
 				zap.String("query", query),
 				zap.String("ip", c.ClientIP()),
 				zap.String("user-agent", c.Request.UserAgent()),
-				trace.ExtractRequestIndexAsField(c),
+				trace.MustExtractRequestIndexAsField(c),
 			)
 		}
 
 		if dumpResponse {
-			cache := bpool.get()
-			defer bpool.put(cache)
+			cache := bpool.Get()
+			defer bpool.Put(cache)
 			c.Writer = &hijackWriter{cache: cache, ResponseWriter: c.Writer}
 		}
 
@@ -89,13 +72,13 @@ func Ginzap(logger *zap.Logger, mergeLog bool, dumpResponse bool) gin.HandlerFun
 
 		switch {
 		case len(c.Errors) > 0:
-			logger.Error("got some errors from gin.Context", zap.Strings("errors", c.Errors.Errors()), trace.ExtractRequestIndexAsField(c))
+			logger.Error("got some errors from gin.Context", zap.Strings("errors", c.Errors.Errors()), trace.MustExtractRequestIndexAsField(c))
 
 		case !mergeLog && !dumpResponse:
 			logger.Info("send http response",
 				zap.Int("status-code", c.Writer.Status()),
 				zap.Int64("latency", latency),
-				trace.ExtractRequestIndexAsField(c),
+				trace.MustExtractRequestIndexAsField(c),
 			)
 
 		case !mergeLog && dumpResponse:
@@ -103,7 +86,7 @@ func Ginzap(logger *zap.Logger, mergeLog bool, dumpResponse bool) gin.HandlerFun
 				zap.Int("status", c.Writer.Status()),
 				zap.ByteString("response-body", respBody),
 				zap.Int64("latency", latency),
-				trace.ExtractRequestIndexAsField(c),
+				trace.MustExtractRequestIndexAsField(c),
 			)
 
 		case mergeLog && !dumpResponse:
@@ -115,7 +98,7 @@ func Ginzap(logger *zap.Logger, mergeLog bool, dumpResponse bool) gin.HandlerFun
 				zap.String("user-agent", c.Request.UserAgent()),
 				zap.Int("status", c.Writer.Status()),
 				zap.Int64("latency", latency),
-				trace.ExtractRequestIndexAsField(c),
+				trace.MustExtractRequestIndexAsField(c),
 			)
 
 		case mergeLog && dumpResponse:
@@ -128,7 +111,7 @@ func Ginzap(logger *zap.Logger, mergeLog bool, dumpResponse bool) gin.HandlerFun
 				zap.Int("status", c.Writer.Status()),
 				zap.ByteString("response-body", respBody),
 				zap.Int64("latency", latency),
-				trace.ExtractRequestIndexAsField(c),
+				trace.MustExtractRequestIndexAsField(c),
 			)
 		}
 	}

@@ -12,10 +12,26 @@ const (
 	ZapKeyRequestIndex = "request-index"
 )
 
-func ExtractRequestIndexFromCtxAsField(ctx context.Context) zap.Field {
+func MustExtractRequestIndexFromCtxAsField(ctx context.Context) zap.Field {
 	return zap.String(ZapKeyRequestIndex, infection.MustExtract(ctx, CtxKeyRequestIndex).(string))
 }
 
-func ExtractRequestIndexAsField(c *gin.Context) zap.Field {
+func ExtractRequestIndexFromCtxAsField(ctx context.Context) (zap.Field, error) {
+	v, err := infection.Extract(ctx, CtxKeyRequestIndex)
+	if err != nil {
+		return zap.Field{}, err
+	}
+	return zap.String(ZapKeyRequestIndex, v.(string)), nil
+}
+
+func MustExtractRequestIndexAsField(c *gin.Context) zap.Field {
 	return zap.String(ZapKeyRequestIndex, MustExtractRequestIndex(c))
+}
+
+func ExtractRequestIndexAsField(c *gin.Context) (zap.Field, error) {
+	v, err := ExtractRequestIndex(c)
+	if err != nil {
+		return zap.Field{}, err
+	}
+	return zap.String(ZapKeyRequestIndex, v), nil
 }
