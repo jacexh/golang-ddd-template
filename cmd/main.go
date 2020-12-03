@@ -2,15 +2,18 @@ package main
 
 import (
 	"fmt"
+	"net/http"
 	"os"
 	"os/signal"
 	"strconv"
 	"syscall"
+	"time"
 
 	"{{.Module}}/application"
 	"{{.Module}}/infrastructure/persistence"
 	"{{.Module}}/logger"
 	"{{.Module}}/option"
+	"{{.Module}}/pkg/infection"
 	"{{.Module}}/router"
 	"go.uber.org/zap"
 )
@@ -42,18 +45,33 @@ func main() {
 	eng := router.BuildRouter(opt.Router)
 
 	// 服务启动
+	srv := &http.Server{
+		Addr:    ":" + strconv.Itoa(opt.Router.Port),
+		Handler: eng,
+	}
+	logger.Logger.Info(fmt.Sprintf("service is running on port %d", opt.Router.Port))
+
 	errChan := make(chan error, 1)
 	go func() {
-		logger.Logger.Info(fmt.Sprintf("service is running on port %d", opt.Router.Port))
-		errChan <- eng.Run(":" + strconv.Itoa(opt.Router.Port))
+		if err := srv.ListenAndServe(); err != http.ErrServerClosed {
+			errChan <- srv.ListenAndServe()
+		}
 	}()
 
 	go func() {
 		sigs := make(chan os.Signal, 1)
 		signal.Notify(sigs, syscall.SIGINT, syscall.SIGTERM, os.Interrupt)
 		sig := <-sigs
-		errChan <- fmt.Errorf("caught signal: %s", sig.String())
+		err := fmt.Errorf("caught signal: %s", sig.String())
+		logger.Logger.Warn("caught quit signal, try to shutdown service in 5 seconds", zap.String("signal", sig.String()))
+		if e := srv.Shutdown(infection.GenContextWithTimeout(5 * time.Second)); e != nil {
+			err = fmt.Errorf("%w | failed to shutdown: %s", err, e.Error())
+		}
+		errChan <- err
 	}()
 
-	logger.Logger.Fatal("service was shutdown", zap.Error(<-errChan))
+	err = <-errChan
+	logger.Logger.Warn("kill all available contexts after 30 seconds")
+	infection.KillContextsAfter(30 * time.Second)
+	logger.Logger.Fatal("service was shutdown", zap.Error(err))
 }

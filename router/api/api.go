@@ -1,11 +1,11 @@
 package api
 
 import (
-	"context"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
 	"{{.Module}}/application"
+	"{{.Module}}/trace"
 )
 
 func GetUser(c *gin.Context) {
@@ -14,7 +14,7 @@ func GetUser(c *gin.Context) {
 		c.AbortWithStatus(http.StatusNotFound)
 		return
 	}
-	dto, err := application.User.GetUserByID(context.Background(), uid)
+	dto, err := application.User.GetUserByID(trace.GenContextWithRequestIndex(c), uid)
 	if err != nil {
 		c.AbortWithStatus(http.StatusInternalServerError)
 		return

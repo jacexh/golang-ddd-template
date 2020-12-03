@@ -7,7 +7,7 @@ import (
 	"{{.Module}}/logger"
 	"{{.Module}}/option"
 	"{{.Module}}/router/api"
-	"github.com/jacexh/goutil/gin-middleware/ginzap"
+	"{{.Module}}/router/middleware"
 )
 
 // BuildRouter 构造Router
@@ -16,8 +16,9 @@ func BuildRouter(option option.RouterOption) *gin.Engine {
 
 	router := gin.New()
 	router.Use(
-		ginzap.RecoveryWithZap(logger.Logger, option.LogStackIfPanic),
-		ginzap.Ginzap(logger.Logger, option.MergeLog, option.DumpResponse),
+		middleware.NewRequestIndexer("").Handle(),
+		middleware.RecoveryWithZap(logger.Logger, option.LogStackIfPanic),
+		middleware.Ginzap(logger.Logger, option.MergeLog, option.DumpResponse),
 	)
 
 	group := router.Group("/api")
