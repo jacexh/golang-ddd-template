@@ -6,18 +6,15 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/jacexh/golang-ddd-template/application"
 	"github.com/jacexh/golang-ddd-template/trace"
+	"github.com/jacexh/golang-ddd-template/types/dto"
 )
 
-func GetUser(c *gin.Context) {
-	uid := c.Param("user")
-	if uid == "" {
-		c.AbortWithStatus(http.StatusNotFound)
-		return
-	}
-	dto, err := application.User.GetUserByID(trace.GenContextWithRequestIndex(c), uid)
-	if err != nil {
+func SaveUser(c *gin.Context) {
+	user := new(dto.UserDTO)
+	if err := c.ShouldBindJSON(user); err != nil {
 		c.AbortWithStatus(http.StatusInternalServerError)
 		return
 	}
-	c.JSON(http.StatusOK, dto)
+	_ = application.User.CreateUser(trace.GenContextWithRequestIndex(c), user)
+	c.JSON(http.StatusOK, nil)
 }

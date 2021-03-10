@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/jacexh/golang-ddd-template/domain/user"
+	"github.com/jacexh/golang-ddd-template/event/handler"
 	"github.com/jacexh/golang-ddd-template/logger"
 	"github.com/jacexh/golang-ddd-template/trace"
 	"github.com/jacexh/golang-ddd-template/types/dto"
@@ -20,23 +21,25 @@ type (
 	}
 
 	UserApplication interface {
-		GetUserByID(context.Context, string) (*dto.UserDTO, error)
+		CreateUser(context.Context, *dto.UserDTO) error
 	}
 )
 
 // BuildUserApplication create user application instance
-func BuildUserApplication(repo user.UserRepository) {
+func BuildUserApplication(repo user.UserRepository, pub user.EventPublisher) {
 	User = &userApplication{
 		repo: repo,
 	}
+	pub.Subscribe("user.created", handler.PrintEvent{})
 }
 
 // GetUserByID return user data transfer object
-func (ua *userApplication) GetUserByID(ctx context.Context, uid string) (*dto.UserDTO, error) {
-	u, err := ua.repo.GetUserByID(ctx, uid)
+func (ua *userApplication) CreateUser(ctx context.Context, dto *dto.UserDTO) error {
+	_, err := ua.repo.GetUserByID(ctx, dto.ID)
 	if err != nil {
-		logger.Logger.Error("failed to get user by id", zap.String("user_id", uid), zap.Error(err), trace.MustExtractRequestIndexFromCtxAsField(ctx))
-		return nil, err
+		logger.Logger.Error("failed to create user", zap.String("user_id", dto.ID), zap.Error(err), trace.MustExtractRequestIndexFromCtxAsField(ctx))
+		return err
 	}
-	return convertUser(u), nil
+	_ = ua.repo.SaveUser(ctx, user.NewUser(dto.ID, dto.Name, "", dto.Email))
+	return nil
 }

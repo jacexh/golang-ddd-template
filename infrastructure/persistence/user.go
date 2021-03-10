@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/jacexh/golang-ddd-template/domain/user"
+	"github.com/jacexh/golang-ddd-template/event"
 	"github.com/jacexh/golang-ddd-template/logger"
 	"github.com/jacexh/golang-ddd-template/trace"
 	"go.uber.org/zap"
@@ -29,7 +30,11 @@ func newUserRepository(db *xorm.Engine) *userRepository {
 	return &userRepository{db}
 }
 
-func (ur *userRepository) SaveUser(context.Context, *user.UserEntity) error {
+func (ur *userRepository) SaveUser(ctx context.Context, u *user.UserEntity) error {
+	ur.db.Context(ctx).Exec("select * from user")
+	for _, change := range u.Changes {
+		event.Publisher.Publish(ctx, change)
+	}
 	return nil
 }
 

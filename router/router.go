@@ -23,7 +23,7 @@ func BuildRouter(option option.RouterOption) *gin.Engine {
 
 	group := router.Group("/api")
 	{
-		group.GET("/users/:user", api.GetUser)
+		group.POST("/user", api.SaveUser)
 	}
 
 	router.GET("/ping", func(c *gin.Context) {
