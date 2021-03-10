@@ -11,7 +11,7 @@ import (
 )
 
 var (
-	User *userApplication
+	User UserApplication = (*userApplication)(nil)
 )
 
 type (

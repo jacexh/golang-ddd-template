@@ -10,6 +10,10 @@ import (
 	"xorm.io/xorm"
 )
 
+var (
+	User user.UserRepository = (*userRepository)(nil)
+)
+
 type (
 	userRepository struct {
 		db *xorm.Engine
@@ -17,7 +21,8 @@ type (
 )
 
 func BuildUserRepository(db *xorm.Engine) user.UserRepository {
-	return newUserRepository(db)
+	User = newUserRepository(db)
+	return User
 }
 
 func newUserRepository(db *xorm.Engine) *userRepository {
