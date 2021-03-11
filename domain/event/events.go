@@ -1,5 +1,7 @@
 package event
 
+import "context"
+
 type (
 	Events struct {
 		events []DomainEvent
@@ -18,10 +20,16 @@ func (el *Events) Add(event DomainEvent) {
 	el.events = append(el.events, event)
 }
 
-func (el *Events) Next() (DomainEvent, bool) {
+func (el *Events) next() (DomainEvent, bool) {
 	if el.index >= len(el.events) {
 		return nil, false
 	}
 	el.index++
 	return el.events[el.index-1], true
+}
+
+func (el *Events) Dispatch(ctx context.Context) {
+	for ev, got := el.next(); got; {
+		defaultMediator.Publish(ctx, ev)
+	}
 }
