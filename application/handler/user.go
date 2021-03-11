@@ -17,5 +17,4 @@ type (
 func (up UserPrinter) Handle(ctx context.Context, ev event.DomainEvent) {
 	logger.Logger.Info("created a new user", zap.String("user_name", ev.(user.EventUserCreated).Name),
 		trace.MustExtractRequestIndexFromCtxAsField(ctx))
-
 }

@@ -30,6 +30,6 @@ func (el *Events) next() (DomainEvent, bool) {
 
 func (el *Events) Dispatch(ctx context.Context) {
 	for ev, got := el.next(); got; {
-		defaultMediator.Publish(ctx, ev)
+		Publish(ctx, ev)
 	}
 }
