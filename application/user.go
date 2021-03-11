@@ -3,8 +3,9 @@ package application
 import (
 	"context"
 
+	"github.com/jacexh/golang-ddd-template/application/handler"
+	"github.com/jacexh/golang-ddd-template/domain/event"
 	"github.com/jacexh/golang-ddd-template/domain/user"
-	"github.com/jacexh/golang-ddd-template/event/handler"
 	"github.com/jacexh/golang-ddd-template/logger"
 	"github.com/jacexh/golang-ddd-template/trace"
 	"github.com/jacexh/golang-ddd-template/types/dto"
@@ -26,11 +27,12 @@ type (
 )
 
 // BuildUserApplication create user application instance
-func BuildUserApplication(repo user.UserRepository, pub user.EventPublisher) {
+func BuildUserApplication(repo user.UserRepository) {
 	User = &userApplication{
 		repo: repo,
 	}
-	pub.Subscribe("user.created", handler.PrintEvent{})
+
+	event.Subscribe(user.EventTypeUserCreated, handler.UserPrinter{})
 }
 
 // GetUserByID return user data transfer object

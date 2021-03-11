@@ -9,8 +9,6 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/jacexh/golang-ddd-template/event"
-
 	"github.com/jacexh/golang-ddd-template/application"
 	"github.com/jacexh/golang-ddd-template/infrastructure/persistence"
 	"github.com/jacexh/golang-ddd-template/logger"
@@ -40,11 +38,8 @@ func main() {
 	}
 	ur := persistence.BuildUserRepository(db)
 
-	// 初始化event bus
-	pub := event.BuildUserEventPublisher()
-
 	// 初始化application层
-	application.BuildUserApplication(ur, pub)
+	application.BuildUserApplication(ur)
 
 	// 启动运行web server
 	eng := router.BuildRouter(opt.Router)

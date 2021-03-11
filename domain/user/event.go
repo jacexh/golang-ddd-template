@@ -1,38 +1,19 @@
 package user
 
-import (
-	"context"
-)
+import "github.com/jacexh/golang-ddd-template/domain/event"
 
 type (
-	Event interface {
-		Type() string
-	}
-
-	UserCreated struct {
+	EventUserCreated struct {
 		ID    string
 		Name  string
 		Email string
 	}
-
-	UserDeleted struct {
-		ID string
-	}
-
-	EventPublisher interface {
-		Publish(ctx context.Context, event Event)
-		Subscribe(string, Subscriber)
-	}
-
-	Subscriber interface {
-		Handle(ctx context.Context, event Event) error
-	}
 )
 
-func (uc UserCreated) Type() string {
-	return "user.created"
-}
+const (
+	EventTypeUserCreated = "user.created"
+)
 
-func (ud UserDeleted) Type() string {
-	return "user.deleted"
+func (uc EventUserCreated) Type() event.DomainEventType {
+	return EventTypeUserCreated
 }

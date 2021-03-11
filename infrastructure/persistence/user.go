@@ -3,8 +3,8 @@ package persistence
 import (
 	"context"
 
+	"github.com/jacexh/golang-ddd-template/domain/event"
 	"github.com/jacexh/golang-ddd-template/domain/user"
-	"github.com/jacexh/golang-ddd-template/event"
 	"github.com/jacexh/golang-ddd-template/logger"
 	"github.com/jacexh/golang-ddd-template/trace"
 	"go.uber.org/zap"
@@ -31,9 +31,9 @@ func newUserRepository(db *xorm.Engine) *userRepository {
 }
 
 func (ur *userRepository) SaveUser(ctx context.Context, u *user.UserEntity) error {
-	ur.db.Context(ctx).Exec("select * from user")
-	for _, change := range u.Changes {
-		event.Publisher.Publish(ctx, change)
+	_, _ = ur.db.Context(ctx).Exec("select * from user")
+	for ev, got := u.Events.Next(); got; {
+		event.Publish(ctx, ev)
 	}
 	return nil
 }
