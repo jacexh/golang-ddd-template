@@ -18,7 +18,7 @@ var (
 
 type (
 	userApplication struct {
-		repo user.UserRepository
+		repo user.Repository
 	}
 
 	UserApplication interface {
@@ -27,7 +27,7 @@ type (
 )
 
 // BuildUserApplication create user application instance
-func BuildUserApplication(repo user.UserRepository) {
+func BuildUserApplication(repo user.Repository) {
 	User = &userApplication{
 		repo: repo,
 	}
@@ -35,13 +35,18 @@ func BuildUserApplication(repo user.UserRepository) {
 	event.Subscribe(user.EventTypeUserCreated, handler.UserPrinter{})
 }
 
-// GetUserByID return user data transfer object
+// GetUserByEmail return user data transfer object
 func (ua *userApplication) CreateUser(ctx context.Context, dto *dto.UserDTO) error {
-	_, err := ua.repo.GetUserByID(ctx, dto.ID)
+	_, err := ua.repo.GetUserByEmail(ctx, dto.Email)
 	if err != nil {
 		logger.Logger.Error("failed to create user", zap.String("user_id", dto.ID), zap.Error(err), trace.MustExtractRequestIndexFromCtxAsField(ctx))
 		return err
 	}
-	_ = ua.repo.SaveUser(ctx, user.NewUser(dto.ID, dto.Name, "", dto.Email))
-	return nil
+	u := user.NewUser(dto.Name, "your_password", dto.Email)
+	if err := u.Validate(); err != nil {
+		logger.Logger.Error("validation failure", zap.Error(err), trace.MustExtractRequestIndexFromCtxAsField(ctx))
+		return err
+	}
+	err = ua.repo.SaveUser(ctx, u)
+	return err
 }

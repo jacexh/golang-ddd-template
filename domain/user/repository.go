@@ -2,7 +2,7 @@ package user
 
 import "context"
 
-type UserRepository interface {
+type Repository interface {
 	SaveUser(context.Context, *UserEntity) error
-	GetUserByID(context.Context, string) (*UserEntity, error)
+	GetUserByEmail(context.Context, string) (*UserEntity, error)
 }

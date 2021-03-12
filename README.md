@@ -20,6 +20,11 @@ gdp
 
 ## Change Log
 
+### 0.2.5
+
+- Graceful Shutdown的exit code改成0
+- 实现Domain Event
+
 ### 0.2.4
 
 - 实现trace功能，确保request id可以在application、infra等层传递，可支持其他对象的传递

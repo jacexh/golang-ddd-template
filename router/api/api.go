@@ -9,7 +9,7 @@ import (
 	"github.com/jacexh/golang-ddd-template/types/dto"
 )
 
-func SaveUser(c *gin.Context) {
+func CreateUser(c *gin.Context) {
 	user := new(dto.UserDTO)
 	if err := c.ShouldBindJSON(user); err != nil {
 		c.AbortWithStatus(http.StatusInternalServerError)
