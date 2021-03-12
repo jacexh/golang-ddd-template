@@ -4,9 +4,9 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/jacexh/golang-ddd-template/application"
-	"github.com/jacexh/golang-ddd-template/trace"
-	"github.com/jacexh/golang-ddd-template/types/dto"
+	"{{.Module}}/application"
+	"{{.Module}}/trace"
+	"{{.Module}}/types/dto"
 )
 
 func CreateUser(c *gin.Context) {

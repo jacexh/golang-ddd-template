@@ -3,7 +3,7 @@ package logger
 import (
 	"fmt"
 
-	"github.com/jacexh/golang-ddd-template/trace"
+	"{{.Module}}/trace"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 	"xorm.io/xorm/log"

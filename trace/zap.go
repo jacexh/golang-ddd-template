@@ -4,7 +4,7 @@ import (
 	"context"
 
 	"github.com/gin-gonic/gin"
-	"github.com/jacexh/golang-ddd-template/pkg/infection"
+	"{{.Module}}/pkg/infection"
 	"go.uber.org/zap"
 )
 

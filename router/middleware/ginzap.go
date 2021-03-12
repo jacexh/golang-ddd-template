@@ -5,8 +5,8 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
-	"github.com/jacexh/golang-ddd-template/pkg/bytespool"
-	"github.com/jacexh/golang-ddd-template/trace"
+	"{{.Module}}/pkg/bytespool"
+	"{{.Module}}/trace"
 	"go.uber.org/zap"
 )
 
