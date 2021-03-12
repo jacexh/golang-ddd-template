@@ -2,7 +2,7 @@
 a DDD project template in golang
 
 - Web Framework: [gin](https://github.com/gin-gonic/gin)
-    * [Middlewares](github.com/jacexh/goutil/gin-middleware)
+    * [Middlewares](https://github.com/jacexh/goutil/gin-middleware)
 - Logging Library: [zap](https://github.com/uber-go/zap)
 - Data Access Library
     * [xorm](https://xorm.io/)
