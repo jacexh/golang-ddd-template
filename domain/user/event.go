@@ -1,8 +1,19 @@
 package user
 
-type UserEvent int
+import "{{.Module}}/domain/event"
+
+type (
+	EventUserCreated struct {
+		ID    string
+		Name  string
+		Email string
+	}
+)
 
 const (
-	UserCreated UserEvent = iota + 1
-	UserDeleted
+	EventTypeUserCreated = "user.created"
 )
+
+func (uc EventUserCreated) Type() event.DomainEventType {
+	return EventTypeUserCreated
+}

@@ -3,6 +3,8 @@ package application
 import (
 	"context"
 
+	"{{.Module}}/application/handler"
+	"{{.Module}}/domain/event"
 	"{{.Module}}/domain/user"
 	"{{.Module}}/logger"
 	"{{.Module}}/trace"
@@ -11,32 +13,40 @@ import (
 )
 
 var (
-	User *userApplication
+	User UserApplication = (*userApplication)(nil)
 )
 
 type (
 	userApplication struct {
-		repo user.UserRepository
+		repo user.Repository
 	}
 
 	UserApplication interface {
-		GetUserByID(context.Context, string) (*dto.UserDTO, error)
+		CreateUser(context.Context, *dto.UserDTO) error
 	}
 )
 
 // BuildUserApplication create user application instance
-func BuildUserApplication(repo user.UserRepository) {
+func BuildUserApplication(repo user.Repository) {
 	User = &userApplication{
 		repo: repo,
 	}
+
+	event.Subscribe(user.EventTypeUserCreated, handler.UserPrinter{})
 }
 
-// GetUserByID return user data transfer object
-func (ua *userApplication) GetUserByID(ctx context.Context, uid string) (*dto.UserDTO, error) {
-	u, err := ua.repo.GetUserByID(ctx, uid)
+// GetUserByEmail return user data transfer object
+func (ua *userApplication) CreateUser(ctx context.Context, dto *dto.UserDTO) error {
+	_, err := ua.repo.GetUserByEmail(ctx, dto.Email)
 	if err != nil {
-		logger.Logger.Error("failed to get user by id", zap.String("user_id", uid), zap.Error(err), trace.MustExtractRequestIndexFromCtxAsField(ctx))
-		return nil, err
+		logger.Logger.Error("failed to create user", zap.String("user_id", dto.ID), zap.Error(err), trace.MustExtractRequestIndexFromCtxAsField(ctx))
+		return err
 	}
-	return convertUser(u), nil
+	u := user.NewUser(dto.Name, "your_password", dto.Email)
+	if err := u.Validate(); err != nil {
+		logger.Logger.Error("validation failure", zap.Error(err), trace.MustExtractRequestIndexFromCtxAsField(ctx))
+		return err
+	}
+	err = ua.repo.SaveUser(ctx, u)
+	return err
 }

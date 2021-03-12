@@ -73,5 +73,6 @@ func main() {
 	err = <-errChan
 	logger.Logger.Warn("kill all available contexts after 30 seconds")
 	infection.KillContextsAfter(30 * time.Second)
-	logger.Logger.Fatal("service was shutdown", zap.Error(err))
+	logger.Logger.Warn("service was shutdown", zap.Error(err))
+	os.Exit(0)
 }
