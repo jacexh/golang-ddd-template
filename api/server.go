@@ -4,10 +4,10 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/jacexh/golang-ddd-template/api/middleware"
-	v1 "github.com/jacexh/golang-ddd-template/api/v1"
-	"github.com/jacexh/golang-ddd-template/internal/logger"
-	"github.com/jacexh/golang-ddd-template/internal/option"
+	"{{.Module}}/api/middleware"
+	v1 "{{.Module}}/api/v1"
+	"{{.Module}}/internal/logger"
+	"{{.Module}}/internal/option"
 )
 
 // BuildRouter 构造Router

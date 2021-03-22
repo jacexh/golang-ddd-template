@@ -3,10 +3,10 @@ package handler
 import (
 	"context"
 
-	"github.com/jacexh/golang-ddd-template/internal/domain/event"
-	"github.com/jacexh/golang-ddd-template/internal/domain/user"
-	"github.com/jacexh/golang-ddd-template/internal/logger"
-	"github.com/jacexh/golang-ddd-template/internal/trace"
+	"{{.Module}}/internal/domain/event"
+	"{{.Module}}/internal/domain/user"
+	"{{.Module}}/internal/logger"
+	"{{.Module}}/internal/trace"
 	"go.uber.org/zap"
 )
 

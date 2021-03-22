@@ -1,6 +1,6 @@
 package user
 
-import "github.com/jacexh/golang-ddd-template/internal/domain/event"
+import "{{.Module}}/internal/domain/event"
 
 type (
 	EventUserCreated struct {

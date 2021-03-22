@@ -9,12 +9,12 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/jacexh/golang-ddd-template/api"
-	"github.com/jacexh/golang-ddd-template/internal/application"
-	"github.com/jacexh/golang-ddd-template/internal/infrastructure/persistence"
-	"github.com/jacexh/golang-ddd-template/internal/logger"
-	"github.com/jacexh/golang-ddd-template/internal/option"
-	"github.com/jacexh/golang-ddd-template/pkg/infection"
+	"{{.Module}}/api"
+	"{{.Module}}/internal/application"
+	"{{.Module}}/internal/infrastructure/persistence"
+	"{{.Module}}/internal/logger"
+	"{{.Module}}/internal/option"
+	"{{.Module}}/pkg/infection"
 	"go.uber.org/zap"
 )
 

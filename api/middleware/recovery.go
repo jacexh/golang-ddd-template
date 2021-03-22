@@ -9,7 +9,7 @@ import (
 	"strings"
 
 	"github.com/gin-gonic/gin"
-	"github.com/jacexh/golang-ddd-template/internal/trace"
+	"{{.Module}}/internal/trace"
 	"go.uber.org/zap"
 )
 
