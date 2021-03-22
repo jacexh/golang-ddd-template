@@ -3,7 +3,7 @@ package user
 import (
 	"errors"
 
-	"github.com/jacexh/golang-ddd-template/domain/event"
+	"github.com/jacexh/golang-ddd-template/internal/domain/event"
 )
 
 type UserEntity struct {

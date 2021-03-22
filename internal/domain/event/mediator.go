@@ -3,8 +3,8 @@ package event
 import (
 	"context"
 
-	"github.com/jacexh/golang-ddd-template/logger"
-	"github.com/jacexh/golang-ddd-template/trace"
+	"github.com/jacexh/golang-ddd-template/internal/logger"
+	"github.com/jacexh/golang-ddd-template/internal/trace"
 	"go.uber.org/zap"
 )
 

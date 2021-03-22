@@ -1,13 +1,13 @@
-package router
+package api
 
 import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/jacexh/golang-ddd-template/logger"
-	"github.com/jacexh/golang-ddd-template/option"
-	"github.com/jacexh/golang-ddd-template/router/api"
-	"github.com/jacexh/golang-ddd-template/router/middleware"
+	"github.com/jacexh/golang-ddd-template/api/middleware"
+	v1 "github.com/jacexh/golang-ddd-template/api/v1"
+	"github.com/jacexh/golang-ddd-template/internal/logger"
+	"github.com/jacexh/golang-ddd-template/internal/option"
 )
 
 // BuildRouter 构造Router
@@ -21,9 +21,9 @@ func BuildRouter(option option.RouterOption) *gin.Engine {
 		middleware.Ginzap(logger.Logger, option.MergeLog, option.DumpResponse),
 	)
 
-	group := router.Group("/api")
+	group := router.Group("/v1")
 	{
-		group.POST("/user", api.CreateUser)
+		group.POST("/user", v1.CreateUser)
 	}
 
 	router.GET("/ping", func(c *gin.Context) {

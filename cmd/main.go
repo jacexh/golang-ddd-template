@@ -9,12 +9,12 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/jacexh/golang-ddd-template/application"
-	"github.com/jacexh/golang-ddd-template/infrastructure/persistence"
-	"github.com/jacexh/golang-ddd-template/logger"
-	"github.com/jacexh/golang-ddd-template/option"
+	"github.com/jacexh/golang-ddd-template/api"
+	"github.com/jacexh/golang-ddd-template/internal/application"
+	"github.com/jacexh/golang-ddd-template/internal/infrastructure/persistence"
+	"github.com/jacexh/golang-ddd-template/internal/logger"
+	"github.com/jacexh/golang-ddd-template/internal/option"
 	"github.com/jacexh/golang-ddd-template/pkg/infection"
-	"github.com/jacexh/golang-ddd-template/router"
 	"go.uber.org/zap"
 )
 
@@ -42,7 +42,7 @@ func main() {
 	application.BuildUserApplication(ur)
 
 	// 启动运行web server
-	eng := router.BuildRouter(opt.Router)
+	eng := api.BuildRouter(opt.Router)
 
 	// 服务启动
 	srv := &http.Server{

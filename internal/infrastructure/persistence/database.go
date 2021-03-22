@@ -4,8 +4,8 @@ import (
 	"fmt"
 
 	_ "github.com/go-sql-driver/mysql"
-	"github.com/jacexh/golang-ddd-template/logger"
-	"github.com/jacexh/golang-ddd-template/option"
+	"github.com/jacexh/golang-ddd-template/internal/logger"
+	"github.com/jacexh/golang-ddd-template/internal/option"
 	"go.uber.org/zap"
 	"xorm.io/xorm"
 )

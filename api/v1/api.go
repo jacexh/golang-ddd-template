@@ -1,12 +1,12 @@
-package api
+package v1
 
 import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"github.com/jacexh/golang-ddd-template/application"
-	"github.com/jacexh/golang-ddd-template/trace"
-	"github.com/jacexh/golang-ddd-template/types/dto"
+	"github.com/jacexh/golang-ddd-template/api/dto"
+	"github.com/jacexh/golang-ddd-template/internal/application"
+	"github.com/jacexh/golang-ddd-template/internal/trace"
 )
 
 func CreateUser(c *gin.Context) {
