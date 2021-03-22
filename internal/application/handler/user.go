@@ -3,10 +3,10 @@ package handler
 import (
 	"context"
 
-	"{{.Module}}/domain/event"
-	"{{.Module}}/domain/user"
-	"{{.Module}}/logger"
-	"{{.Module}}/trace"
+	"{{.Module}}/internal/domain/event"
+	"{{.Module}}/internal/domain/user"
+	"{{.Module}}/internal/logger"
+	"{{.Module}}/internal/trace"
 	"go.uber.org/zap"
 )
 

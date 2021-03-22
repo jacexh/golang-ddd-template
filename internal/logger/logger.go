@@ -1,7 +1,7 @@
 package logger
 
 import (
-	"{{.Module}}/option"
+	"{{.Module}}/internal/option"
 	"github.com/jacexh/goutil/zaphelper"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"

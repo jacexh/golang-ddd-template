@@ -3,8 +3,8 @@ package event
 import (
 	"context"
 
-	"{{.Module}}/logger"
-	"{{.Module}}/trace"
+	"{{.Module}}/internal/logger"
+	"{{.Module}}/internal/trace"
 	"go.uber.org/zap"
 )
 

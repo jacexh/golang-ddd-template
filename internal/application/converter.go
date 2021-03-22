@@ -1,8 +1,8 @@
 package application
 
 import (
-	"{{.Module}}/domain/user"
-	"{{.Module}}/types/dto"
+	"{{.Module}}/api/dto"
+	"{{.Module}}/internal/domain/user"
 )
 
 func convertUser(user *user.UserEntity) *dto.UserDTO {

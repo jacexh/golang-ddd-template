@@ -1,13 +1,13 @@
-package router
+package api
 
 import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"{{.Module}}/logger"
-	"{{.Module}}/option"
-	"{{.Module}}/router/api"
-	"{{.Module}}/router/middleware"
+	"{{.Module}}/api/middleware"
+	v1 "{{.Module}}/api/v1"
+	"{{.Module}}/internal/logger"
+	"{{.Module}}/internal/option"
 )
 
 // BuildRouter 构造Router
@@ -21,9 +21,9 @@ func BuildRouter(option option.RouterOption) *gin.Engine {
 		middleware.Ginzap(logger.Logger, option.MergeLog, option.DumpResponse),
 	)
 
-	group := router.Group("/api")
+	group := router.Group("/v1")
 	{
-		group.POST("/user", api.CreateUser)
+		group.POST("/user", v1.CreateUser)
 	}
 
 	router.GET("/ping", func(c *gin.Context) {

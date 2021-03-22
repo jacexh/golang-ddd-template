@@ -1,6 +1,6 @@
 package user
 
-import "{{.Module}}/domain/event"
+import "{{.Module}}/internal/domain/event"
 
 type (
 	EventUserCreated struct {

@@ -3,7 +3,7 @@ package logger
 import (
 	"fmt"
 
-	"{{.Module}}/trace"
+	"{{.Module}}/internal/trace"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 	"xorm.io/xorm/log"

@@ -5,8 +5,8 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
+	"{{.Module}}/internal/trace"
 	"{{.Module}}/pkg/bytespool"
-	"{{.Module}}/trace"
 	"go.uber.org/zap"
 )
 

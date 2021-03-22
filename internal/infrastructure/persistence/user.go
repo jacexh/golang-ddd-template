@@ -3,7 +3,7 @@ package persistence
 import (
 	"context"
 
-	"{{.Module}}/domain/user"
+	"{{.Module}}/internal/domain/user"
 	"xorm.io/xorm"
 )
 

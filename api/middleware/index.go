@@ -5,7 +5,7 @@ import (
 	"sync/atomic"
 
 	"github.com/gin-gonic/gin"
-	"{{.Module}}/trace"
+	"{{.Module}}/internal/trace"
 )
 
 type (

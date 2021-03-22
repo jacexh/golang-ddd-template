@@ -9,12 +9,12 @@ import (
 	"syscall"
 	"time"
 
-	"{{.Module}}/application"
-	"{{.Module}}/infrastructure/persistence"
-	"{{.Module}}/logger"
-	"{{.Module}}/option"
+	"{{.Module}}/api"
+	"{{.Module}}/internal/application"
+	"{{.Module}}/internal/infrastructure/persistence"
+	"{{.Module}}/internal/logger"
+	"{{.Module}}/internal/option"
 	"{{.Module}}/pkg/infection"
-	"{{.Module}}/router"
 	"go.uber.org/zap"
 )
 
@@ -42,7 +42,7 @@ func main() {
 	application.BuildUserApplication(ur)
 
 	// 启动运行web server
-	eng := router.BuildRouter(opt.Router)
+	eng := api.BuildRouter(opt.Router)
 
 	// 服务启动
 	srv := &http.Server{

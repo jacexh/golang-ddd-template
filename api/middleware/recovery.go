@@ -9,7 +9,7 @@ import (
 	"strings"
 
 	"github.com/gin-gonic/gin"
-	"{{.Module}}/trace"
+	"{{.Module}}/internal/trace"
 	"go.uber.org/zap"
 )
 

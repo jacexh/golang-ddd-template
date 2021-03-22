@@ -3,7 +3,7 @@ package user
 import (
 	"errors"
 
-	"{{.Module}}/domain/event"
+	"{{.Module}}/internal/domain/event"
 )
 
 type UserEntity struct {

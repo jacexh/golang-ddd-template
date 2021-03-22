@@ -1,12 +1,12 @@
-package api
+package v1
 
 import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	"{{.Module}}/application"
-	"{{.Module}}/trace"
-	"{{.Module}}/types/dto"
+	"{{.Module}}/api/dto"
+	"{{.Module}}/internal/application"
+	"{{.Module}}/internal/trace"
 )
 
 func CreateUser(c *gin.Context) {

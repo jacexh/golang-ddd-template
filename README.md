@@ -20,6 +20,10 @@ gdp
 
 ## Change Log
 
+### 0.2.6
+
+- 参考[Project Layout](https://github.com/golang-standards/project-layout)调整项目布局
+
 ### 0.2.5
 
 - Graceful Shutdown的exit code改成0

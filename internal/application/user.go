@@ -3,12 +3,12 @@ package application
 import (
 	"context"
 
-	"{{.Module}}/application/handler"
-	"{{.Module}}/domain/event"
-	"{{.Module}}/domain/user"
-	"{{.Module}}/logger"
-	"{{.Module}}/trace"
-	"{{.Module}}/types/dto"
+	"{{.Module}}/api/dto"
+	"{{.Module}}/internal/application/handler"
+	"{{.Module}}/internal/domain/event"
+	"{{.Module}}/internal/domain/user"
+	"{{.Module}}/internal/logger"
+	"{{.Module}}/internal/trace"
 	"go.uber.org/zap"
 )
 

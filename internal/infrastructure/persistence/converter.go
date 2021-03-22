@@ -1,8 +1,8 @@
 package persistence
 
 import (
-	"{{.Module}}/domain/user"
-	"{{.Module}}/types/do"
+	"{{.Module}}/internal/domain/user"
+	"{{.Module}}/internal/infrastructure/do"
 )
 
 func convertUser(entity *user.UserEntity) *do.UserDo {
