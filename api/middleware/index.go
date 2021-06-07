@@ -1,7 +1,12 @@
 package middleware
 
 import (
+	"crypto/rand"
+	"encoding/base64"
+	"fmt"
+	"os"
 	"strconv"
+	"strings"
 	"sync/atomic"
 
 	"github.com/gin-gonic/gin"
@@ -18,9 +23,24 @@ type (
 func NewRequestIndexer(name string) *RequestIndexer {
 	ri := &RequestIndexer{name: name}
 	if ri.name == "" {
-		ri.name = "request"
+		ri.genName()
 	}
 	return ri
+}
+
+func (ri *RequestIndexer) genName() {
+	hostname, err := os.Hostname()
+	if hostname == "" || err != nil {
+		hostname = "localhost"
+	}
+	var buf [12]byte
+	var b64 string
+	for len(b64) < 10 {
+		rand.Read(buf[:])
+		b64 = base64.StdEncoding.EncodeToString(buf[:])
+		b64 = strings.NewReplacer("+", "", "/", "").Replace(b64)
+	}
+	ri.name = fmt.Sprintf("%s/%s", hostname, b64[0:10])
 }
 
 func (ri *RequestIndexer) Handle() gin.HandlerFunc {
