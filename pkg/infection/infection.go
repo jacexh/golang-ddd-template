@@ -8,7 +8,7 @@ import (
 )
 
 const (
-	KeyValues = "values"
+	KeyValues = "infection-values"
 )
 
 var (

@@ -29,7 +29,7 @@ func newUserRepository(db *xorm.Engine) *userRepository {
 func (ur *userRepository) SaveUser(ctx context.Context, u *user.UserEntity) error {
 	_, err := ur.db.Context(ctx).Exec(
 		"INSERT INTO user (id, name, password, email, version) VALUES (?, ?, ?, ?, 1) ON DUPLICATE KEY UPDATE name=?, password=?, version=version+1",
-		u.ID, u.Name, u.Password, u.Email, u.Name, u.Password)
+		u.ID, u.Name, u.HashedPassword, u.Email, u.Name, u.HashedPassword)
 	u.Events.Dispatch(ctx)
 	return err
 }

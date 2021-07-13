@@ -1,4 +1,4 @@
-package event
+package eventbus
 
 import (
 	"context"
@@ -51,7 +51,7 @@ func (m *mediator) Publish(ctx context.Context, event DomainEvent) {
 
 			select {
 			case <-ctx.Done():
-				logger.Logger.Error("failed to handle current domain event", zap.String("event_type", string(event.Type())),
+				logger.Logger.Error("failed to handle current domain eventbus", zap.String("event_type", string(event.Type())),
 					zap.Any("event_details", event), zap.Error(ctx.Err()), trace.MustExtractRequestIndexFromCtxAsField(ctx))
 			default:
 				for _, sub := range subs {

@@ -9,7 +9,7 @@ func convertUser(entity *user.UserEntity) *do.UserDo {
 	return &do.UserDo{
 		ID:       entity.ID,
 		Name:     entity.Name,
-		Password: entity.Password,
+		Password: entity.HashedPassword,
 		Email:    entity.Email,
 	}
 }

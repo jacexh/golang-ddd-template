@@ -1,6 +1,8 @@
 package user
 
-import "github.com/jacexh/golang-ddd-template/internal/domain/event"
+import (
+	"github.com/jacexh/golang-ddd-template/internal/eventbus"
+)
 
 type (
 	EventUserCreated struct {
@@ -14,6 +16,6 @@ const (
 	EventTypeUserCreated = "user.created"
 )
 
-func (uc EventUserCreated) Type() event.DomainEventType {
+func (uc EventUserCreated) Type() eventbus.DomainEventType {
 	return EventTypeUserCreated
 }

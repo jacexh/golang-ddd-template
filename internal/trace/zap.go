@@ -3,7 +3,6 @@ package trace
 import (
 	"context"
 
-	"github.com/gin-gonic/gin"
 	"github.com/jacexh/golang-ddd-template/pkg/infection"
 	"go.uber.org/zap"
 )
@@ -22,16 +21,4 @@ func ExtractRequestIndexFromCtxAsField(ctx context.Context) (zap.Field, error) {
 		return zap.Field{}, err
 	}
 	return zap.String(ZapKeyRequestIndex, v.(string)), nil
-}
-
-func MustExtractRequestIndexAsField(c *gin.Context) zap.Field {
-	return zap.String(ZapKeyRequestIndex, MustExtractRequestIndex(c))
-}
-
-func ExtractRequestIndexAsField(c *gin.Context) (zap.Field, error) {
-	v, err := ExtractRequestIndex(c)
-	if err != nil {
-		return zap.Field{}, err
-	}
-	return zap.String(ZapKeyRequestIndex, v), nil
 }
