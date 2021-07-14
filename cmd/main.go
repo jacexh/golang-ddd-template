@@ -42,7 +42,7 @@ func main() {
 	application.BuildUserApplication(ur)
 
 	// 启动运行web server
-	eng := router.BuildRouter(opt.Router)
+	eng := router.BuildRouter(opt.Router, log)
 	srv := &http.Server{
 		Addr:    ":" + strconv.Itoa(opt.Router.Port),
 		Handler: eng,

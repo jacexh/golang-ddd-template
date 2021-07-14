@@ -25,11 +25,8 @@ type (
 
 	// RouterOption 服务运行时配置
 	RouterOption struct {
-		Port            int  `default:"8080"`
-		MergeLog        bool `default:"false" yaml:"merge_log" json:"merge_log"`
-		DumpResponse    bool `default:"false" yaml:"dump_response" json:"dump_response"`
-		LogStackIfPanic bool `default:"true" yaml:"log_stack_if_panic" json:"log_stack_if_panic"`
-		Timeout         int  `default:"30"`
+		Port    int `default:"8080"`
+		Timeout int `default:"30"`
 	}
 
 	// DatabaseOption mysql数据库配置

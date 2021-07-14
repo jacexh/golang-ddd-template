@@ -20,7 +20,7 @@ var (
 	_ middleware.LogEntry = (*ZapLogger)(nil)
 )
 
-func GlobalTimeout(next http.Handler) http.Handler {
+func InfectContext(next http.Handler) http.Handler {
 	fn := func(w http.ResponseWriter, r *http.Request) {
 		r.WithContext(infection.GenContextWithDefaultTimeout())
 
