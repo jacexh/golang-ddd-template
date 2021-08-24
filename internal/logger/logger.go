@@ -2,7 +2,7 @@ package logger
 
 import (
 	"github.com/jacexh/golang-ddd-template/internal/option"
-	"github.com/jacexh/goutil/zaphelper"
+	"github.com/jacexh/gopkg/zaprotate"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 )
@@ -26,7 +26,7 @@ func BuildLogger(opt option.LoggerOption) *zap.Logger {
 	conf.EncoderConfig.TimeKey = "@timestamp"
 	conf.EncoderConfig.EncodeTime = zapcore.ISO8601TimeEncoder
 	conf.Level = zap.NewAtomicLevelAt(levelMapper[opt.Level])
-	Logger = zaphelper.BuildRotateLogger(conf, zaphelper.RotatingFileConfig{
+	Logger = zaprotate.BuildRotateLogger(conf, zaprotate.RotatingFileConfig{
 		LoggerName: opt.Name,
 		Filename:   opt.Filename,
 		MaxSize:    opt.MaxSize,

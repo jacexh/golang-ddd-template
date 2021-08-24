@@ -9,6 +9,7 @@ import (
 	"github.com/jacexh/golang-ddd-template/internal/option"
 	"github.com/jacexh/golang-ddd-template/pkg/infection"
 	"github.com/jacexh/golang-ddd-template/router/api"
+	chimiddleware "github.com/jacexh/gopkg/chi-middleware"
 	"go.uber.org/zap"
 )
 
@@ -21,7 +22,7 @@ func BuildRouter(option option.RouterOption, log *zap.Logger) http.Handler {
 	r.Use(InfectContext)
 	r.Use(middleware.RequestID)
 	r.Use(middleware.RealIP)
-	r.Use(ZapLog(log))
+	r.Use(chimiddleware.RequestZapLog(log))
 	r.Use(middleware.Recoverer)
 	r.Use(middleware.Heartbeat("/ping"))
 
