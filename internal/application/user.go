@@ -7,7 +7,6 @@ import (
 	"github.com/jacexh/golang-ddd-template/internal/domain/user"
 	"github.com/jacexh/golang-ddd-template/internal/eventbus"
 	"github.com/jacexh/golang-ddd-template/internal/logger"
-	"github.com/jacexh/golang-ddd-template/internal/trace"
 	"github.com/jacexh/golang-ddd-template/router/dto"
 	"go.uber.org/zap"
 )
@@ -38,12 +37,15 @@ func BuildUserApplication(repo user.Repository) {
 func (ua *userApplication) CreateUser(ctx context.Context, dto *dto.User) error {
 	_, err := ua.repo.GetUserByEmail(ctx, dto.Email)
 	if err != nil {
-		logger.Logger.Error("failed to create user", zap.String("user_id", dto.ID), zap.Error(err), trace.MustExtractRequestIndexFromCtxAsField(ctx))
+		logger.Logger.Error("failed to create user", zap.String("user_id", dto.ID), zap.Error(err), logger.MustExtractTracingIDFromCtx(ctx))
 		return err
 	}
 	u, err := user.NewUser(dto.Name, "your_password", dto.Email)
+	if err != nil {
+		return err
+	}
 	if err := u.Validate(); err != nil {
-		logger.Logger.Error("validation failure", zap.Error(err), trace.MustExtractRequestIndexFromCtxAsField(ctx))
+		logger.Logger.Error("validation failure", zap.Error(err), logger.MustExtractTracingIDFromCtx(ctx))
 		return err
 	}
 	err = ua.repo.SaveUser(ctx, u)

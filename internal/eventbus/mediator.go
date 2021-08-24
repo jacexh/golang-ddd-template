@@ -4,7 +4,6 @@ import (
 	"context"
 
 	"github.com/jacexh/golang-ddd-template/internal/logger"
-	"github.com/jacexh/golang-ddd-template/internal/trace"
 	"go.uber.org/zap"
 )
 
@@ -52,7 +51,7 @@ func (m *mediator) Publish(ctx context.Context, event DomainEvent) {
 			select {
 			case <-ctx.Done():
 				logger.Logger.Error("failed to handle current domain eventbus", zap.String("event_type", string(event.Type())),
-					zap.Any("event_details", event), zap.Error(ctx.Err()), trace.MustExtractRequestIndexFromCtxAsField(ctx))
+					zap.Any("event_details", event), zap.Error(ctx.Err()), logger.MustExtractTracingIDFromCtx(ctx))
 			default:
 				for _, sub := range subs {
 					sub.Handle(ctx, event)

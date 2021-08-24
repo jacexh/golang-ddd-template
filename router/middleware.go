@@ -1,10 +1,12 @@
 package router
 
 import (
+	"context"
 	"net/http"
 	"time"
 
 	"github.com/go-chi/chi/v5/middleware"
+	"github.com/jacexh/golang-ddd-template/internal/logger"
 	"github.com/jacexh/golang-ddd-template/pkg/infection"
 	"go.uber.org/zap"
 )
@@ -14,10 +16,17 @@ type (
 		logger    *zap.Logger
 		requestID string
 	}
+
+	ChiRequestIDTracer struct{}
 )
 
 var (
 	_ middleware.LogEntry = (*ZapLogger)(nil)
+	_ logger.Tracer       = (*ChiRequestIDTracer)(nil)
+)
+
+const (
+	requestIDKey = "request_id"
 )
 
 func InfectContext(next http.Handler) http.Handler {
@@ -40,7 +49,7 @@ func NewZapLogEntry(logger *zap.Logger, r *http.Request) *ZapLogger {
 		zap.String("uri", r.RequestURI),
 		zap.String("remote_addr", r.RemoteAddr),
 		zap.String("user_agent", r.UserAgent()),
-		zap.String("request_id", entry.requestID),
+		zap.String(requestIDKey, entry.requestID),
 	)
 	return entry
 }
@@ -50,7 +59,7 @@ func (log *ZapLogger) Write(status, bytes int, header http.Header, elapsed time.
 		zap.Int("response_status_code", status),
 		zap.Int("response_bytes_length", bytes),
 		zap.String("elapsed", elapsed.String()),
-		zap.String("request_id", log.requestID),
+		zap.String(requestIDKey, log.requestID),
 	)
 }
 
@@ -58,7 +67,7 @@ func (log *ZapLogger) Panic(v interface{}, stack []byte) {
 	log.logger.Error("broken request",
 		zap.Any("panic", v),
 		zap.ByteString("stack", stack),
-		zap.String("request_id", log.requestID),
+		zap.String(requestIDKey, log.requestID),
 	)
 }
 
@@ -75,4 +84,8 @@ func ZapLog(logger *zap.Logger) func(next http.Handler) http.Handler {
 		}
 		return http.HandlerFunc(fn)
 	}
+}
+
+func (t *ChiRequestIDTracer) ExtractTracingIDFromCtx(ctx context.Context) (zap.Field, error) {
+	return zap.String(requestIDKey, middleware.GetReqID(ctx)), nil
 }

@@ -30,6 +30,7 @@ func main() {
 	// 加载全局日志配置，完成日志的初始化操作
 	log := logger.BuildLogger(opt.Logger)
 	logger.Logger.Info("loaded options", zap.Any("option", opt), zap.String("version", version))
+	logger.SetTracer(&router.ChiRequestIDTracer{})
 
 	// 创建数据库连接
 	db, err := persistence.BuildDBConnection(opt.Database, log)
