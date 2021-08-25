@@ -9,11 +9,11 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/jacexh/golang-ddd-template/api"
 	"github.com/jacexh/golang-ddd-template/internal/application"
 	"github.com/jacexh/golang-ddd-template/internal/infrastructure/persistence"
 	"github.com/jacexh/golang-ddd-template/internal/logger"
 	"github.com/jacexh/golang-ddd-template/internal/option"
+	"github.com/jacexh/golang-ddd-template/internal/transport/rest"
 	"github.com/jacexh/golang-ddd-template/pkg/infection"
 	"go.uber.org/zap"
 )
@@ -30,6 +30,7 @@ func main() {
 	// 加载全局日志配置，完成日志的初始化操作
 	log := logger.BuildLogger(opt.Logger)
 	logger.Logger.Info("loaded options", zap.Any("option", opt), zap.String("version", version))
+	logger.SetTracer(&rest.ChiRequestIDTracer{})
 
 	// 创建数据库连接
 	db, err := persistence.BuildDBConnection(opt.Database, log)
@@ -42,9 +43,7 @@ func main() {
 	application.BuildUserApplication(ur)
 
 	// 启动运行web server
-	eng := api.BuildRouter(opt.Router)
-
-	// 服务启动
+	eng := rest.BuildRouter(opt.Router, log)
 	srv := &http.Server{
 		Addr:    ":" + strconv.Itoa(opt.Router.Port),
 		Handler: eng,

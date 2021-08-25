@@ -1,12 +1,12 @@
 package application
 
 import (
-	"github.com/jacexh/golang-ddd-template/api/dto"
 	"github.com/jacexh/golang-ddd-template/internal/domain/user"
+	"github.com/jacexh/golang-ddd-template/internal/transport/dto"
 )
 
-func convertUser(user *user.UserEntity) *dto.UserDTO {
-	return &dto.UserDTO{
+func convertUser(user *user.UserEntity) *dto.User {
+	return &dto.User{
 		ID:    user.ID,
 		Name:  user.Name,
 		Email: user.Email,

@@ -3,7 +3,6 @@ package logger
 import (
 	"fmt"
 
-	"github.com/jacexh/golang-ddd-template/internal/trace"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 	"xorm.io/xorm/log"
@@ -26,7 +25,7 @@ func (zl *XormZapLogger) BeforeSQL(_ log.LogContext) {
 }
 
 func (zl *XormZapLogger) AfterSQL(ctx log.LogContext) {
-	field, err := trace.ExtractRequestIndexFromCtxAsField(ctx.Ctx)
+	field, err := ExtractTracingIDFromCtx(ctx.Ctx)
 
 	switch {
 	case ctx.Err == nil && err == nil:
