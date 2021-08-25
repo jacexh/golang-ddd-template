@@ -5,8 +5,8 @@ import (
 	"net/http"
 
 	"github.com/go-chi/chi/v5/middleware"
-	"github.com/jacexh/golang-ddd-template/internal/logger"
-	"github.com/jacexh/golang-ddd-template/pkg/infection"
+	"{{.Module}}/internal/logger"
+	"{{.Module}}/pkg/infection"
 	"go.uber.org/zap"
 )
 

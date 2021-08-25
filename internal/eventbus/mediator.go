@@ -3,7 +3,7 @@ package eventbus
 import (
 	"context"
 
-	"github.com/jacexh/golang-ddd-template/internal/logger"
+	"{{.Module}}/internal/logger"
 	"go.uber.org/zap"
 )
 

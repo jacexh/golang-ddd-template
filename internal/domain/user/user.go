@@ -3,7 +3,7 @@ package user
 import (
 	"errors"
 
-	"github.com/jacexh/golang-ddd-template/internal/eventbus"
+	"{{.Module}}/internal/eventbus"
 	"golang.org/x/crypto/bcrypt"
 )
 

@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"github.com/jacexh/golang-ddd-template/internal/application"
-	"github.com/jacexh/golang-ddd-template/internal/transport/dto"
+	"{{.Module}}/internal/application"
+	"{{.Module}}/internal/transport/dto"
 )
 
 func CreateUser(w http.ResponseWriter, r *http.Request) {

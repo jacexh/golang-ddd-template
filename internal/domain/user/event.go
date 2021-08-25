@@ -1,7 +1,7 @@
 package user
 
 import (
-	"github.com/jacexh/golang-ddd-template/internal/eventbus"
+	"{{.Module}}/internal/eventbus"
 )
 
 type (

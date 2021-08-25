@@ -3,9 +3,9 @@ package handler
 import (
 	"context"
 
-	"github.com/jacexh/golang-ddd-template/internal/domain/user"
-	"github.com/jacexh/golang-ddd-template/internal/eventbus"
-	"github.com/jacexh/golang-ddd-template/internal/logger"
+	"{{.Module}}/internal/domain/user"
+	"{{.Module}}/internal/eventbus"
+	"{{.Module}}/internal/logger"
 	"go.uber.org/zap"
 )
 

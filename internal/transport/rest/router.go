@@ -6,9 +6,9 @@ import (
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
-	"github.com/jacexh/golang-ddd-template/internal/option"
-	"github.com/jacexh/golang-ddd-template/internal/transport/rest/api"
-	"github.com/jacexh/golang-ddd-template/pkg/infection"
+	"{{.Module}}/internal/option"
+	"{{.Module}}/internal/transport/rest/api"
+	"{{.Module}}/pkg/infection"
 	chimiddleware "github.com/jacexh/gopkg/chi-middleware"
 	"go.uber.org/zap"
 )

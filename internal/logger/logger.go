@@ -1,7 +1,7 @@
 package logger
 
 import (
-	"github.com/jacexh/golang-ddd-template/internal/option"
+	"{{.Module}}/internal/option"
 	"github.com/jacexh/gopkg/zaprotate"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"

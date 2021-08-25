@@ -3,11 +3,11 @@ package application
 import (
 	"context"
 
-	"github.com/jacexh/golang-ddd-template/internal/application/handler"
-	"github.com/jacexh/golang-ddd-template/internal/domain/user"
-	"github.com/jacexh/golang-ddd-template/internal/eventbus"
-	"github.com/jacexh/golang-ddd-template/internal/logger"
-	"github.com/jacexh/golang-ddd-template/internal/transport/dto"
+	"{{.Module}}/internal/application/handler"
+	"{{.Module}}/internal/domain/user"
+	"{{.Module}}/internal/eventbus"
+	"{{.Module}}/internal/logger"
+	"{{.Module}}/internal/transport/dto"
 	"go.uber.org/zap"
 )
 
