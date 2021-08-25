@@ -7,7 +7,7 @@ import (
 	"github.com/jacexh/golang-ddd-template/internal/domain/user"
 	"github.com/jacexh/golang-ddd-template/internal/eventbus"
 	"github.com/jacexh/golang-ddd-template/internal/logger"
-	"github.com/jacexh/golang-ddd-template/router/dto"
+	"github.com/jacexh/golang-ddd-template/internal/transport/dto"
 	"go.uber.org/zap"
 )
 
