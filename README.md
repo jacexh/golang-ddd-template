@@ -1,8 +1,7 @@
 # golang-ddd-template
 a DDD project template in golang
 
-- Web Framework: [gin](https://github.com/gin-gonic/gin)
-    * [Middlewares](https://github.com/jacexh/goutil/gin-middleware)
+- Web Framework: [chi](https://github.com/go-chi/chi)
 - Logging Library: [zap](https://github.com/uber-go/zap)
 - Data Access Library
     * [xorm](https://xorm.io/)
@@ -19,6 +18,14 @@ gdp
 ```
 
 ## Change Log
+
+### 0.3.0
+
+- 从Gin切换到Chi
+
+### 0.2.6
+
+- 参考[Project Layout](https://github.com/golang-standards/project-layout)调整项目布局
 
 ### 0.2.5
 
