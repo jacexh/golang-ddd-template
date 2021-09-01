@@ -14,5 +14,6 @@ func CreateUser(w http.ResponseWriter, r *http.Request) {
 	_ = application.User.CreateUser(r.Context(), u)
 
 	w.WriteHeader(http.StatusOK)
+	w.Header().Set("Content-Type", "application/json; charset=utf-8")
 	_ = json.NewEncoder(w).Encode(u)
 }
