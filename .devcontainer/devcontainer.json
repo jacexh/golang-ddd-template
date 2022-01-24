@@ -1,0 +1,74 @@
+// For format details, see https://aka.ms/vscode-remote/devcontainer.json or this file's README at:
+// https://github.com/microsoft/vscode-dev-containers/tree/v0.163.1/containers/go
+{
+	"name": "Go",
+	"build": {
+		"dockerfile": "Dockerfile",
+		"args": {
+			// Update the VARIANT arg to pick a version of Go: 1, 1.16, 1.15
+			"VARIANT": "1.17",
+			// Options
+			"INSTALL_NODE": "false",
+			"NODE_VERSION": "lts/*",
+		}
+	},
+	"runArgs": [ "--cap-add=SYS_PTRACE", "--security-opt", "seccomp=unconfined" ],
+
+	// Set *default* container specific settings.json values on container create.
+	"settings": {
+		"terminal.integrated.defaultProfile.linux": "zsh",
+		"terminal.integrated.defaultProfile.osx": "zsh",
+		"terminal.integrated.defaultProfile.windows": "zsh",
+		"go.toolsManagement.checkForUpdates": "local",
+		"go.gopath": "/go",
+		"go.useLanguageServer": true
+	},
+
+	// Add the IDs of extensions you want installed when the container is created.
+	"extensions": [
+		"golang.Go",
+		"eamodio.gitlens",
+		"mohsen1.prettify-json",
+		"zxh404.vscode-proto3",
+		"bierner.markdown-preview-github-styles",
+		"cschleiden.vscode-github-actions",
+		"redhat.vscode-yaml",
+		"carlos-algms.make-task-provider",
+		"streetsidesoftware.code-spell-checker",
+		"k--kato.intellij-idea-keybindings",
+		"donjayamanne.githistory",
+		"github.vscode-pull-request-github"
+	],
+
+	// Use 'forwardPorts' to make a list of ports inside the container available locally.
+	"forwardPorts": [8080, 8090],
+
+	// Use 'portsAttributes' to set default properties for specific forwarded ports. More info: https://code.visualstudio.com/docs/remote/devcontainerjson-reference.
+	"portsAttributes": {
+		"8080": {
+			"label": "HTTP API",
+			"onAutoForward": "notify",
+		},
+        "8090": {
+            "label": "gRPC API",
+            "onAutoForward": "notify",
+        }
+	},
+
+	"remoteEnv": {
+		"GOPROXY": "https://goproxy.cn,direct",
+	},
+
+	// Use 'otherPortsAttributes' to configure any ports that aren't configured using 'portsAttributes'.
+	// "otherPortsAttributes": {
+	// 		"onAutoForward": "silent"
+	// },
+
+	// Use 'postCreateCommand' to run commands after the container is created.
+	// "postCreateCommand": "make gomod",
+
+	// Uncomment to connect as a non-root user. More info: https://aka.ms/vscode-remote/containers/non-root.
+	"remoteUser": "vscode",
+	"workspaceFolder": "/workspace/golang-ddd-template",
+	"workspaceMount": "source=/home/admin/workspace/golang-ddd-template,target=/workspace/golang-ddd-template,type=bind,consistency=cached"
+}
