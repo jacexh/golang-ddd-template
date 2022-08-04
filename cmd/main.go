@@ -25,7 +25,7 @@ var (
 
 func main() {
 	// 加载项目配置文件
-	opt := option.LoadConfig()
+	opt := option.MustLoadConfig()
 
 	// 加载全局日志配置，完成日志的初始化操作
 	log := logger.BuildLogger(opt.Logger)

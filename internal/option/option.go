@@ -7,7 +7,10 @@ import (
 	"path/filepath"
 	"runtime"
 
-	"github.com/jacexh/multiconfig"
+	"github.com/go-kratos/kratos/contrib/config/apollo/v2"
+	"github.com/jacexh/gopkg/config"
+	"github.com/jacexh/gopkg/config/env"
+	"github.com/jacexh/gopkg/config/file"
 )
 
 type (
@@ -129,11 +132,69 @@ func findConfigFile() string {
 	panic(errors.New("cannot find the config file"))
 }
 
-func LoadConfig() *Option {
+func findApolloConfigs() (opts []apollo.Option) {
+
+	configServerURL := os.Getenv("APOLLO_HOST")
+	if configServerURL == "" {
+		return nil
+	}
+
+	configAppID := os.Getenv("APOLLO_APPID")
+	if configAppID == "" {
+		configAppID = environmentVariablesPrefix
+	}
+
+	configCluster := os.Getenv("APOLLO_CLUSTER")
+	if configCluster == "" {
+		configCluster = "default"
+	}
+
+	// apollo only support json/yml/yaml
+	configNamespace := os.Getenv("APOLLO_NAMESPACE")
+	if configNamespace == "" {
+		configNamespace = "config.yml"
+	}
+
+	configSecret := os.Getenv("APOLLO_SECRET")
+
+	opts = append(opts, apollo.WithEndpoint(configServerURL))
+	opts = append(opts, apollo.WithAppID(configAppID))
+	opts = append(opts, apollo.WithCluster(configCluster))
+	opts = append(opts, apollo.WithNamespace(configNamespace))
+	opts = append(opts, apollo.WithEnableBackup())
+	if configSecret != "" {
+		opts = append(opts, apollo.WithSecret(configSecret))
+	}
+	return opts
+}
+
+func MustLoadConfig() *Option {
 	f := findConfigFile()
+
+	source := []config.Source{
+		env.NewSource(environmentVariablesPrefix + "_"),
+		file.NewSource(f),
+	}
+
+	apoOpts := findApolloConfigs()
+	if apoOpts != nil {
+		source = append(source,
+			convertSource(apollo.NewSource(apoOpts...)),
+		)
+	}
+
+	c := config.New(config.WithSource(source...))
+
+	err := c.Load()
+	if err != nil {
+		panic(err)
+	}
+
 	opt := new(Option)
-	loader := multiconfig.NewWithPathAndEnvPrefix(f, environmentVariablesPrefix)
-	loader.MustLoad(opt)
+	err = c.Scan(opt)
+	if err != nil {
+		panic(err)
+	}
 	return opt
 }
 
