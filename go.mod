@@ -1,6 +1,6 @@
 module github.com/jacexh/golang-ddd-template
 
-go 1.14
+go 1.18
 
 require (
 	github.com/go-chi/chi/v5 v5.0.3
